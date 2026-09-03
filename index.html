@@ -6,17 +6,20 @@
     <title>Můj kalendář těšení a úkolů</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #000000;
+            --year-bg: #141417;       /* Ještě tmavší pozadí roku */
+            --month-bg: #222228;      /* Světlejší a znatelně odlišené pozadí měsíce */
+            --card-bg: #121214;       /* Tmavší pozadí karet pro kontrast */
+            --input-bg: #111111;
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
-            --accent-pink: #f472b6;
-            --accent-green: #4ade80;
+            --accent-pink: #facc15;
+            --accent-green: #facc15;
             --accent-yellow: #facc15;
             --accent-blue: #38bdf8;
-            --border-color: #334155;
-            --highlight-bg: rgba(244, 114, 182, 0.12);
-            --highlight-border: #f472b6;
+            --border-color: #52525b;  /* Výraznější okraje */
+            --highlight-bg: #1e1b10;  /* Jemně žlutohnědé pozadí pro zvýrazněné události */
+            --highlight-border: #facc15;
         }
 
         body {
@@ -42,41 +45,51 @@
         h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #f472b6, #818cf8);
+            background: linear-gradient(to right, #facc15, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
         .year-section {
-            background-color: var(--card-bg);
+            background-color: var(--year-bg);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--border-color);
         }
 
         .year-title {
-            font-size: 1.3rem;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 800;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
+            letter-spacing: 0.5px;
+            color: #ffffff; 
+            background: linear-gradient(to right, #ffffff, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .year-2026 { color: var(--accent-pink); }
-        .year-2027 { color: var(--accent-green); }
-        .year-2028 { color: var(--accent-yellow); }
-
         .month-section {
-            background: rgba(15, 23, 42, 0.4);
+            background: var(--month-bg);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 14px;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .month-section:last-child {
@@ -84,23 +97,20 @@
         }
 
         .month-title {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
             margin-bottom: 12px;
-            color: var(--accent-pink);
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
-
-        .year-section:nth-of-type(2) .month-title { color: var(--accent-green); }
-        .year-section:nth-of-type(3) .month-title { color: var(--accent-yellow); }
 
         .item-group {
             margin-bottom: 12px;
-            background: rgba(15, 23, 42, 0.3);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 12px;
@@ -108,20 +118,7 @@
 
         .item-group.highlighted-event {
             background: var(--highlight-bg);
-            border-color: var(--highlight-border);
-            box-shadow: 0 0 15px rgba(244, 114, 182, 0.15);
-        }
-
-        .year-section:nth-of-type(2) .item-group.highlighted-event {
-            background: rgba(74, 222, 128, 0.12);
-            border-color: var(--accent-green);
-            box-shadow: 0 0 15px rgba(74, 222, 128, 0.15);
-        }
-
-        .year-section:nth-of-type(3) .item-group.highlighted-event {
-            background: rgba(250, 204, 21, 0.12);
-            border-color: var(--accent-yellow);
-            box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
+            border: 2px solid var(--highlight-border);
         }
 
         .item-group:last-child {
@@ -135,20 +132,18 @@
             margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
-        .year-section:nth-of-type(1) .highlighted-event .event-header {
-            color: var(--accent-pink);
-        }
-
-        .year-section:nth-of-type(2) .highlighted-event .event-header {
-            color: var(--accent-green);
-        }
-
-        .year-section:nth-of-type(3) .highlighted-event .event-header {
-            color: var(--accent-yellow);
+        .event-date-badge {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: monospace;
         }
 
         .editable-text {
@@ -168,16 +163,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             padding: 10px 12px;
             border-radius: 8px;
-            border: 1px solid rgba(51, 65, 85, 0.5);
+            border: 1px solid #3f3f46;
             transition: all 0.2s ease;
         }
 
         .task-item:hover {
-            border-color: var(--border-color);
-            background: rgba(15, 23, 42, 0.8);
+            border-color: #52525b;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .task-item input[type="checkbox"] {
@@ -187,9 +182,6 @@
             cursor: pointer;
             flex-shrink: 0;
         }
-
-        .year-section:nth-of-type(2) .task-item input[type="checkbox"] { accent-color: var(--accent-green); }
-        .year-section:nth-of-type(3) .task-item input[type="checkbox"] { accent-color: var(--accent-yellow); }
 
         .task-item label {
             cursor: pointer;
@@ -204,7 +196,6 @@
             color: var(--text-muted);
         }
 
-        /* Tlačítka akcí pro lepší ovladatelnost na mobilu */
         button {
             touch-action: manipulation;
         }
@@ -217,32 +208,79 @@
             font-weight: 600;
         }
 
-        /* Responsivní úpravy pro malé obrazovky (mobily) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        .modal-box {
+            background: #1c1c1e;
+            padding: 24px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid #3a3a3c;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+            box-sizing: border-box;
+        }
+
+        .modal-box h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+            color: #ffffff;
+        }
+
+        .modal-box label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .modal-box input[type="text"],
+        .modal-box select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: #2c2c2e;
+            color: #ffffff;
+            border: 1px solid #48484a;
+            box-sizing: border-box;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .modal-box input[type="text"]:focus,
+        .modal-box select:focus {
+            border-color: var(--accent-pink);
+        }
+
+        .modal-box input::placeholder {
+            color: #8e8e93;
+        }
+
         @media (max-width: 600px) {
-            body {
-                padding: 8px;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .year-section {
-                padding: 12px;
-            }
-
+            body { padding: 8px; }
+            h1 { font-size: 1.5rem; }
+            .year-section { padding: 12px; }
             .event-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
             }
-
-            .event-header > span.editable-text {
-                width: 100%;
-                font-size: 1.05rem;
-            }
-
-            /* Akční tlačítka u nadpisu a úkolů hezky vedle sebe na plnou šířku řádku */
             .event-header-actions, .task-item-actions {
                 display: flex;
                 gap: 6px;
@@ -250,18 +288,9 @@
                 justify-content: flex-end;
                 margin-top: 4px;
             }
-
-            .task-item {
-                flex-wrap: wrap;
-            }
-
-            .task-item label {
-                width: calc(100% - 30px);
-            }
-
-            .task-item .edit-task-btn, .task-item .delete-task-btn {
-                margin-left: auto;
-            }
+            .task-item { flex-wrap: wrap; }
+            .task-item label { width: calc(100% - 30px); }
+            .task-item .edit-task-btn, .task-item .delete-task-btn { margin-left: auto; }
         }
     </style>
 </head>
@@ -270,26 +299,24 @@
 <div class="container">
     <header>
         <h1>Kalendář</h1>
-        <div style="margin-top: 12px;">
-            <button id="addEventBtn" style="background: linear-gradient(to right, #f472b6, #818cf8); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); width: 100%; max-width: 300px;">+ Přidat událost / úkol</button>
+        <div class="header-buttons">
+            <button id="addEventBtn" style="background: linear-gradient(to right, #facc15, #818cf8); color: #000000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">+ Přidat událost / úkol</button>
+            <button id="analyticsBtn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">📊 Analýza vytížení</button>
         </div>
     </header>
 
-    <!-- 2026 -->
     <div class="year-section" data-year="2026">
-        <div class="year-title year-2026">🌸 2026</div>
+        <div class="year-title">2026</div>
         <div class="months-container"></div>
     </div>
 
-    <!-- 2027 -->
     <div class="year-section" data-year="2027">
-        <div class="year-title year-2027">🟩 2027</div>
+        <div class="year-title">2027</div>
         <div class="months-container"></div>
     </div>
 
-    <!-- 2028 -->
     <div class="year-section" data-year="2028">
-        <div class="year-title year-2028">🟨 2028</div>
+        <div class="year-title">2028</div>
         <div class="months-container"></div>
     </div>
 </div>
@@ -297,6 +324,8 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const addEventBtn = document.getElementById("addEventBtn");
+        const analyticsBtn = document.getElementById("analyticsBtn");
+        
         const addModal = document.getElementById("addModal");
         const modalCancel = document.getElementById("modalCancel");
         const modalSave = document.getElementById("modalSave");
@@ -307,6 +336,11 @@
         const subtaskCancel = document.getElementById("subtaskCancel");
         const subtaskSave = document.getElementById("subtaskSave");
         const subtaskTextInput = document.getElementById("subtaskTextInput");
+        
+        const analyticsModal = document.getElementById("analyticsModal");
+        const analyticsClose = document.getElementById("analyticsClose");
+        const analyticsContent = document.getElementById("analyticsContent");
+
         let activeGroupIdForSubtask = null;
 
         modalType.addEventListener("change", () => {
@@ -317,19 +351,14 @@
             }
         });
 
-        addEventBtn.addEventListener("click", () => {
-            addModal.style.display = "flex";
-        });
-
-        modalCancel.addEventListener("click", () => {
-            addModal.style.display = "none";
-        });
-
+        addEventBtn.addEventListener("click", () => { addModal.style.display = "flex"; });
+        modalCancel.addEventListener("click", () => { addModal.style.display = "none"; });
         subtaskCancel.addEventListener("click", () => {
             subtaskModal.style.display = "none";
             subtaskTextInput.value = "";
             activeGroupIdForSubtask = null;
         });
+        analyticsClose.addEventListener("click", () => { analyticsModal.style.display = "none"; });
 
         subtaskSave.addEventListener("click", () => {
             const subText = subtaskTextInput.value.trim();
@@ -341,7 +370,6 @@
                 subtaskModal.style.display = "none";
                 subtaskTextInput.value = "";
                 activeGroupIdForSubtask = null;
-
                 renderCalendar();
             }
         });
@@ -359,75 +387,115 @@
         }
 
         const monthNames = [
-            { num: 1, name: "Leden" },
-            { num: 2, name: "Únor" },
-            { num: 3, name: "Březen" },
-            { num: 4, name: "Duben" },
-            { num: 5, name: "Květen" },
-            { num: 6, name: "Červen" },
-            { num: 7, name: "Červenec" },
-            { num: 8, name: "Srpen" },
-            { num: 9, name: "Září" },
-            { num: 10, name: "Říjen" },
-            { num: 11, name: "Listopad" },
-            { num: 12, name: "Prosinec" }
+            { num: 1, name: "Leden", days: 31 },
+            { num: 2, name: "Únor", days: 28 },
+            { num: 3, name: "Březen", days: 31 },
+            { num: 4, name: "Duben", days: 30 },
+            { num: 5, name: "Květen", days: 31 },
+            { num: 6, name: "Červen", days: 30 },
+            { num: 7, name: "Červenec", days: 31 },
+            { num: 8, name: "Srpen", days: 31 },
+            { num: 9, name: "Září", days: 30 },
+            { num: 10, name: "Říjen", days: 31 },
+            { num: 11, name: "Listopad", days: 30 },
+            { num: 12, name: "Prosinec", days: 31 }
         ];
 
-        function extractDateInfo(text) {
-            const match = text.match(/(\d{1,2})\.\s*(\d{1,2})\./);
-            if (match) {
-                return {
-                    day: parseInt(match[1], 10),
-                    month: parseInt(match[2], 10)
-                };
+        function getDaysInMonth(monthNum, year) {
+            if (monthNum === 2) {
+                const y = parseInt(year, 10);
+                return ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0) ? 29 : 28;
             }
-            const matchMonthOnly = text.match(/(\d{1,2})\./g);
-            if (matchMonthOnly && matchMonthOnly.length > 0) {
-                const lastToken = matchMonthOnly[matchMonthOnly.length - 1];
-                const m = parseInt(lastToken, 10);
-                if (m >= 1 && m <= 12) {
-                    const firstToken = matchMonthOnly[0];
-                    return {
-                        day: parseInt(firstToken, 10),
-                        month: m
-                    };
+            return monthNames[monthNum - 1].days;
+        }
+
+        function extractDateInterval(dateText) {
+            if (!dateText) return null;
+            
+            const lower = dateText.toLowerCase();
+            if (/^\d{4}$/.test(dateText.trim())) return null;
+            for (let i = 0; i < monthNames.length; i++) {
+                if (lower === monthNames[i].name.toLowerCase() || lower.includes(monthNames[i].name.toLowerCase() + " 20")) {
+                    if (!/\d/.test(dateText)) return null;
                 }
             }
-            for (let mObj of monthNames) {
-                if (text.toLowerCase().includes(mObj.name.toLowerCase())) {
-                    return { day: 1, month: mObj.num };
+
+            const fullRangeMatch = dateText.match(/(\d{1,2})\.\s*([0-9]{1,2})?\.\s*(?:–|-)\s*(\d{1,2})\.\s*([0-9]{1,2})\./);
+            if (fullRangeMatch) {
+                const startD = parseInt(fullRangeMatch[1], 10);
+                const startM = fullRangeMatch[2] ? parseInt(fullRangeMatch[2], 10) : parseInt(fullRangeMatch[4], 10);
+                const endD = parseInt(fullRangeMatch[3], 10);
+                const endM = parseInt(fullRangeMatch[4], 10);
+                return { startDay: startD, endDay: endD, month: startM, endMonth: endM };
+            }
+
+            const rangeMatch = dateText.match(/(\d{1,2})\.\s*(?:–|-)\s*(\d{1,2})\.\s*([0-9]{1,2})\./);
+            if (rangeMatch) {
+                const m = parseInt(rangeMatch[3], 10);
+                return { startDay: parseInt(rangeMatch[1], 10), endDay: parseInt(rangeMatch[2], 10), month: m, endMonth: m };
+            }
+
+            const matchSingle = dateText.match(/(\d{1,2})\.\s*(\d{1,2})\./);
+            if (matchSingle) {
+                const d = parseInt(matchSingle[1], 10);
+                const m = parseInt(matchSingle[2], 10);
+                return { startDay: d, endDay: d, month: m, endMonth: m };
+            }
+
+            for (let i = 0; i < monthNames.length; i++) {
+                if (dateText.toLowerCase().includes(monthNames[i].name.toLowerCase())) {
+                    const cleanText = dateText.toLowerCase().replace(/20\d\d/g, "").trim();
+                    if (cleanText === monthNames[i].name.toLowerCase()) {
+                        return null;
+                    }
+
+                    let endMNum = monthNames[i].num;
+                    for (let j = 0; j < monthNames.length; j++) {
+                        if (dateText.toLowerCase().includes(monthNames[j].name.toLowerCase())) {
+                            endMNum = Math.max(endMNum, monthNames[j].num);
+                        }
+                    }
+                    return { startDay: 1, endDay: monthNames[endMNum - 1].days, month: monthNames[i].num, endMonth: endMNum };
                 }
             }
-            return { day: 999, month: 13 };
+            return null;
+        }
+
+        function extractDateInfo(dateText) {
+            const interval = extractDateInterval(dateText);
+            if (interval) return { day: interval.startDay, month: interval.month };
+            
+            for (let i = 0; i < monthNames.length; i++) {
+                if (dateText.toLowerCase().includes(monthNames[i].name.toLowerCase())) {
+                    return { day: 1, month: monthNames[i].num };
+                }
+            }
+            return { day: 1, month: 12 };
         }
 
         const defaultEvents = [
-            // 2026
-            { year: "2026", title: "1.–28. 9.", tasks: ["Přečíst Zaklínač a jeho svět", "Dohrát The Callisto Protocol – DLC"], highlighted: false, groupIndex: 0 },
-            { year: "2026", title: "29. 9. — The Witcher 3 Remastered ✨", tasks: ["Připomenout si základní příběh Zaklínače 1 a 2"], highlighted: true, groupIndex: 1 },
-            { year: "2026", title: "1. 11.–18. 11.", tasks: ["Zahrát si GTA: Vice City", "Zahrát si The Witcher 3 Remastered"], highlighted: false, groupIndex: 2 },
-            { year: "2026", title: "1. 11.–30. 11.", tasks: ["Přečíst Spasitel Duny"], highlighted: false, groupIndex: 3 },
-            { year: "2026", title: "19. 11. — GTA 6 ✨", tasks: [], highlighted: true, groupIndex: 4 },
-            { year: "2026", title: "1. 12.–24. 12.", tasks: ["Přečíst Harry Potter a Kámen mudrců", "Zahrát si Hogwarts Legacy"], highlighted: false, groupIndex: 5 },
-            { year: "2026", title: "17. 12. — Duna 3 ✨", tasks: ["Připomenout si film Duna", "Připomenout si Dunu: Část druhá"], highlighted: true, groupIndex: 6 },
-            { year: "2026", title: "25. 12. — Harry Potter – 1. série ✨", tasks: [], highlighted: true, groupIndex: 7 },
+            { year: "2026", date: "1.–28. 9.", title: "", tasks: ["Přečíst Zaklínač a jeho svět", "Dohrát The Callisto Protocol – DLC"], highlighted: false, groupIndex: 0 },
+            { year: "2026", date: "29. 9.", title: "The Witcher 3 Remastered ✨", tasks: ["Připomenout si základní příběh Zaklínače 1 a 2"], highlighted: true, groupIndex: 1 },
+            { year: "2026", date: "1. 11.–18. 11.", title: "", tasks: ["Zahrát si GTA: Vice City", "Zahrát si The Witcher 3 Remastered"], highlighted: false, groupIndex: 2 },
+            { year: "2026", date: "1. 11.–30. 11.", title: "", tasks: ["Přečíst Spasitel Duny"], highlighted: false, groupIndex: 3 },
+            { year: "2026", date: "19. 11.", title: "GTA 6 ✨", tasks: [], highlighted: true, groupIndex: 4 },
+            { year: "2026", date: "1. 12.–24. 12.", title: "", tasks: ["Přečíst Harry Potter a Kámen mudrců", "Zahrát si Hogwarts Legacy"], highlighted: false, groupIndex: 5 },
+            { year: "2026", date: "17. 12.", title: "Duna 3 ✨", tasks: ["Připomenout si film Duna", "Připomenout si Dunu: Část druhá"], highlighted: true, groupIndex: 6 },
+            { year: "2026", date: "25. 12.", title: "Harry Potter – 1. série ✨", tasks: [], highlighted: true, groupIndex: 7 },
             
-            // 2027
-            { year: "2027", title: "Leden 2027", tasks: ["Kingdom Come: Deliverance II – DLC"], highlighted: false, groupIndex: 8 },
-            { year: "2027", title: "Únor 2027 — Metro 2039 ✨", tasks: ["Připomenout si příběh Metro 2033", "Připomenout si Metro: Last Light", "Připomenout si Metro Exodus", "Zahrát si nejlepší části Metro znovu"], highlighted: true, groupIndex: 9 },
-            { year: "2027", title: "Březen–duben 2027", tasks: ["Přečíst Zaklínač: Vzestup krále všech RPG"], highlighted: false, groupIndex: 10 },
-            { year: "2027", title: "Květen–červen 2027", tasks: ["Wolfenstein II"], highlighted: false, groupIndex: 11 },
-            { year: "2027", title: "2027 — The Witcher 3: Songs of the Past ✨", tasks: ["Připomenout si příběh The Witcher 3", "Připomenout si Hearts of Stone", "Připomenout si Blood and Wine"], highlighted: true, groupIndex: 12 },
-            { year: "2027", title: "2027 — Fallout – 3. série ✨", tasks: ["Připomenout si Fallout – 1. sérii", "Připomenout si Fallout – 2. sérii"], highlighted: true, groupIndex: 13 },
-            { year: "2027", title: "2027 — The Last of Us – 3. série ✨", tasks: ["Nic"], highlighted: true, groupIndex: 14 },
+            { year: "2027", date: "Leden 2027", title: "", tasks: ["Kingdom Come: Deliverance II – DLC"], highlighted: false, groupIndex: 8 },
+            { year: "2027", date: "Únor 2027", title: "Metro 2039 ✨", tasks: ["Připomenout si příběh Metro 2033", "Připomenout si Metro: Last Light", "Připomenout si Metro Exodus", "Zahrát si nejlepší části Metro znovu"], highlighted: true, groupIndex: 9 },
+            { year: "2027", date: "Březen–duben 2027", title: "", tasks: ["Přečíst Zaklínač: Vzestup krále všech RPG"], highlighted: false, groupIndex: 10 },
+            { year: "2027", date: "Květen–červen 2027", title: "", tasks: ["Wolfenstein II"], highlighted: false, groupIndex: 11 },
+            { year: "2027", date: "2027", title: "The Witcher 3: Songs of the Past ✨", tasks: ["Připomenout si příběh The Witcher 3", "Připomenout si Hearts of Stone", "Připomenout si Blood and Wine"], highlighted: true, groupIndex: 12 },
+            { year: "2027", date: "2027", title: "Fallout – 3. série ✨", tasks: ["Připomenout si Fallout – 1. sérii", "Připomenout si Fallout – 2. sérii"], highlighted: true, groupIndex: 13 },
+            { year: "2027", date: "2027", title: "The Last of Us – 3. série ✨", tasks: ["Nic"], highlighted: true, groupIndex: 14 },
 
-            // 2028
-            { year: "2028", title: "2028 — The Witcher 4 ✨", tasks: ["Připomenout si příběh The Witcher 1", "Připomenout si příběh The Witcher 2", "Připomenout si příběh The Witcher 3", "Dohrát The Witcher 3: Songs of the Past"], highlighted: true, groupIndex: 15 }
+            { year: "2028", date: "2028", title: "The Witcher 4 ✨", tasks: ["Připomenout si příběh The Witcher 1", "Připomenout si příběh The Witcher 2", "Připomenout si příběh The Witcher 3", "Dohrát The Witcher 3: Songs of the Past"], highlighted: true, groupIndex: 15 }
         ];
 
         function attachTaskItemFeatures(taskItem, updateCallback, onDeleteCallback) {
             const label = taskItem.querySelector("label");
-            
             if (!taskItem.querySelector(".edit-task-btn")) {
                 const actionsDiv = document.createElement("div");
                 actionsDiv.className = "task-item-actions";
@@ -476,27 +544,29 @@
 
         function renderCalendar() {
             const yearSections = document.querySelectorAll(".year-section");
+            const activeMonthsByYear = { "2026": new Set(), "2027": new Set(), "2028": new Set() };
 
-            const activeMonthsByYear = {
-                "2026": new Set(),
-                "2027": new Set(),
-                "2028": new Set()
-            };
-
-            function registerMonth(year, title) {
-                const dateInfo = extractDateInfo(title);
-                activeMonthsByYear[year].add(dateInfo.month);
+            function registerMonth(year, dateStr) {
+                const dateInfo = extractDateInfo(dateStr);
+                if (dateInfo.month >= 1 && dateInfo.month <= 12) {
+                    if (activeMonthsByYear[year]) {
+                        activeMonthsByYear[year].add(dateInfo.month);
+                    }
+                }
             }
 
             defaultEvents.forEach((ev) => {
                 if (!hiddenGroups.includes(ev.groupIndex)) {
-                    const headerText = localStorage.getItem("header_text_" + ev.groupIndex) || ev.title;
-                    registerMonth(ev.year, headerText);
+                    const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
+                    registerMonth(ev.year, dateText);
                 }
             });
+            customItems.forEach((item) => { registerMonth(item.year, item.date); });
 
-            customItems.forEach((item) => {
-                registerMonth(item.year, item.title);
+            Object.keys(activeMonthsByYear).forEach(y => {
+                if (activeMonthsByYear[y].size === 0) {
+                    activeMonthsByYear[y].add(12);
+                }
             });
 
             yearSections.forEach(yearSec => {
@@ -510,27 +580,22 @@
                         const monthSec = document.createElement("div");
                         monthSec.className = "month-section";
                         monthSec.setAttribute("data-month-num", m);
-                        monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name} ${yearStr}</div>`;
+                        monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name}</div>`;
                         monthsContainer.appendChild(monthSec);
                     }
                 }
-
-                if (monthsContainer.children.length === 0) {
-                    yearSec.style.display = "none";
-                } else {
-                    yearSec.style.display = "block";
-                }
+                yearSec.style.display = monthsContainer.children.length === 0 ? "none" : "block";
             });
 
-            // 1. Výchozí události
             defaultEvents.forEach((ev) => {
                 if (hiddenGroups.includes(ev.groupIndex)) return;
-
                 const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === ev.year);
                 if (!yearSec) return;
 
-                const headerText = localStorage.getItem("header_text_" + ev.groupIndex) || ev.title;
-                const dateInfo = extractDateInfo(headerText);
+                const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
+                const titleText = localStorage.getItem("event_title_" + ev.groupIndex) !== null ? localStorage.getItem("event_title_" + ev.groupIndex) : ev.title;
+                
+                const dateInfo = extractDateInfo(dateText);
                 const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
                 if (!targetMonthSec) return;
 
@@ -541,9 +606,10 @@
 
                 let innerHtml = `
                     <div class="event-header">
-                        <span class="editable-text" style="flex-grow: 1;">${headerText}</span>
+                        <span class="event-date-badge editable-date" style="cursor: pointer;" title="Kliknutím upravíš datum">${dateText}</span>
+                        <span class="editable-text" style="flex-grow: 1;">${titleText}</span>
                         <div class="event-header-actions">
-                            <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green);">+ Úkol</button>
+                            <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink);">+ Úkol</button>
                             <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
                             <button class="delete-group-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
                         </div>
@@ -553,7 +619,6 @@
                 ev.tasks.forEach((taskText, tIndex) => {
                     const globalTaskIndex = ev.groupIndex * 100 + tIndex;
                     if (hiddenTasks.includes(globalTaskIndex)) return;
-
                     const finalTaskText = localStorage.getItem("task_text_" + globalTaskIndex) || taskText;
                     const isChecked = localStorage.getItem("task_state_" + globalTaskIndex) === "true";
                     const uniqueId = `t_${ev.groupIndex}_${tIndex}`;
@@ -580,6 +645,7 @@
                 groupDiv.innerHTML = innerHtml;
                 targetMonthSec.appendChild(groupDiv);
 
+                const dateBadge = groupDiv.querySelector(".editable-date");
                 const textSpan = groupDiv.querySelector(".editable-text");
                 const editGroupBtn = groupDiv.querySelector(".edit-group-btn");
                 const delGroupBtn = groupDiv.querySelector(".delete-group-btn");
@@ -589,14 +655,19 @@
                     const isEditable = textSpan.getAttribute("contenteditable") === "true";
                     if (isEditable) {
                         textSpan.setAttribute("contenteditable", "false");
+                        dateBadge.setAttribute("contenteditable", "false");
                         textSpan.style.borderBottom = "none";
+                        dateBadge.style.borderBottom = "none";
                         editGroupBtn.textContent = "Upravit";
                         delGroupBtn.style.display = "none";
-                        localStorage.setItem("header_text_" + ev.groupIndex, textSpan.textContent);
+                        localStorage.setItem("event_title_" + ev.groupIndex, textSpan.textContent);
+                        localStorage.setItem("event_date_" + ev.groupIndex, dateBadge.textContent);
                         renderCalendar();
                     } else {
                         textSpan.setAttribute("contenteditable", "true");
+                        dateBadge.setAttribute("contenteditable", "true");
                         textSpan.style.borderBottom = "1px dashed var(--accent-blue)";
+                        dateBadge.style.borderBottom = "1px dashed var(--accent-blue)";
                         textSpan.focus();
                         editGroupBtn.textContent = "Uložit";
                         delGroupBtn.style.display = "inline-block";
@@ -620,9 +691,7 @@
                 groupDiv.querySelectorAll(".task-item[data-task-idx]").forEach(li => {
                     const taskIdx = parseInt(li.getAttribute("data-task-idx"), 10);
                     const cb = li.querySelector("input[type='checkbox']");
-                    cb.addEventListener("change", () => {
-                        localStorage.setItem("task_state_" + taskIdx, cb.checked);
-                    });
+                    cb.addEventListener("change", () => { localStorage.setItem("task_state_" + taskIdx, cb.checked); });
 
                     attachTaskItemFeatures(li, (newText) => {
                         localStorage.setItem("task_text_" + taskIdx, newText);
@@ -656,12 +725,11 @@
                 });
             });
 
-            // 2. Vlastní přidané položky
             customItems.forEach((item, index) => {
                 const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === item.year);
                 if (!yearSec) return;
 
-                const dateInfo = extractDateInfo(item.title);
+                const dateInfo = extractDateInfo(item.date);
                 const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
                 if (!targetMonthSec) return;
 
@@ -672,9 +740,10 @@
 
                 let innerContent = `
                     <div class="event-header">
+                        <span class="event-date-badge editable-date" style="cursor: pointer;" title="Kliknutím upravíš datum">${item.date}</span>
                         <span class="editable-text" style="flex-grow: 1;">${item.title}</span>
                         <div class="event-header-actions">
-                            <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green);">+ Úkol</button>
+                            <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink);">+ Úkol</button>
                             <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
                             <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
                         </div>
@@ -744,6 +813,7 @@
                     });
                 });
 
+                const dateBadge = groupDiv.querySelector(".editable-date");
                 const headerSpan = groupDiv.querySelector(".editable-text");
                 const editGroupBtn = groupDiv.querySelector(".edit-group-btn");
                 const delGroupBtn = groupDiv.querySelector(".delete-custom-btn");
@@ -753,15 +823,20 @@
                     const isEditable = headerSpan.getAttribute("contenteditable") === "true";
                     if (isEditable) {
                         headerSpan.setAttribute("contenteditable", "false");
+                        dateBadge.setAttribute("contenteditable", "false");
                         headerSpan.style.borderBottom = "none";
+                        dateBadge.style.borderBottom = "none";
                         editGroupBtn.textContent = "Upravit";
                         delGroupBtn.style.display = "none";
                         customItems[index].title = headerSpan.textContent;
+                        customItems[index].date = dateBadge.textContent;
                         localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
                         renderCalendar();
                     } else {
                         headerSpan.setAttribute("contenteditable", "true");
+                        dateBadge.setAttribute("contenteditable", "true");
                         headerSpan.style.borderBottom = "1px dashed var(--accent-blue)";
+                        dateBadge.style.borderBottom = "1px dashed var(--accent-blue)";
                         headerSpan.focus();
                         editGroupBtn.textContent = "Uložit";
                         delGroupBtn.style.display = "inline-block";
@@ -781,30 +856,170 @@
 
         renderCalendar();
 
+        analyticsBtn.addEventListener("click", () => {
+            let busyDaysByMonth = {};
+            const years = ["2026", "2027", "2028"];
+            
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth() + 1;
+            const currentDay = now.getDate();
+
+            years.forEach(year => {
+                for (let m = 1; m <= 12; m++) {
+                    busyDaysByMonth[`${year}-${m}`] = new Set();
+                }
+            });
+
+            if (currentYear === 2026) {
+                for (let m = 1; m < currentMonth; m++) {
+                    const totalD = getDaysInMonth(m, "2026");
+                    for (let d = 1; d <= totalD; d++) {
+                        busyDaysByMonth[`2026-${m}`].add(d);
+                    }
+                }
+                for (let d = 1; d < currentDay; d++) {
+                    busyDaysByMonth[`2026-${currentMonth}`].add(d);
+                }
+            } else if (currentYear > 2026) {
+                for (let m = 1; m <= 12; m++) {
+                    const totalD = getDaysInMonth(m, "2026");
+                    for (let d = 1; d <= totalD; d++) {
+                        busyDaysByMonth[`2026-${m}`].add(d);
+                    }
+                }
+            }
+
+            function markBusyDays(year, dateText) {
+                const interval = extractDateInterval(dateText);
+                if (!interval) return;
+                
+                if (interval.endMonth && interval.endMonth !== interval.month) {
+                    for (let m = interval.month; m <= interval.endMonth; m++) {
+                        const key = `${year}-${m}`;
+                        if (busyDaysByMonth[key]) {
+                            const mDays = getDaysInMonth(m, year);
+                            const startD = (m === interval.month) ? interval.startDay : 1;
+                            const endD = (m === interval.endMonth) ? interval.endMonth : mDays;
+                            for (let d = startD; d <= endD; d++) {
+                                busyDaysByMonth[key].add(d);
+                            }
+                        }
+                    }
+                } else {
+                    const key = `${year}-${interval.month}`;
+                    if (busyDaysByMonth[key]) {
+                        for (let d = interval.startDay; d <= interval.endDay; d++) {
+                            busyDaysByMonth[key].add(d);
+                        }
+                    }
+                }
+            }
+
+            defaultEvents.forEach((ev) => {
+                if (hiddenGroups.includes(ev.groupIndex)) return;
+                const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
+                markBusyDays(ev.year, dateText);
+            });
+
+            customItems.forEach((item) => {
+                markBusyDays(item.year, item.date);
+            });
+
+            let freeGapsByYear = {};
+
+            years.forEach(year => {
+                freeGapsByYear[year] = [];
+                for (let m = 1; m <= 12; m++) {
+                    const key = `${year}-${m}`;
+                    const totalDays = getDaysInMonth(m, year);
+                    const busySet = busyDaysByMonth[key];
+                    const monthObj = monthNames.find(mn => mn.num === m);
+
+                    let currentGapStart = null;
+                    for (let day = 1; day <= totalDays; day++) {
+                        if (!busySet.has(day)) {
+                            if (currentGapStart === null) currentGapStart = day;
+                        } else {
+                            if (currentGapStart !== null) {
+                                let gapLength = day - currentGapStart;
+                                if (gapLength >= 3) {
+                                    freeGapsByYear[year].push({ start: currentGapStart, end: day - 1, monthName: monthObj.name });
+                                }
+                                currentGapStart = null;
+                            }
+                        }
+                    }
+                    if (currentGapStart !== null) {
+                        let gapLength = (totalDays + 1) - currentGapStart;
+                        if (gapLength >= 3) {
+                            freeGapsByYear[year].push({ start: currentGapStart, end: totalDays, monthName: monthObj.name });
+                        }
+                    }
+                }
+            });
+
+            let html = `<div style="display: flex; flex-direction: column; gap: 8px;">`;
+
+            years.forEach(year => {
+                const gaps = freeGapsByYear[year] || [];
+                html += `
+                    <div style="background: rgba(250, 204, 21, 0.08); border: 1px dashed var(--accent-pink); border-radius: 8px; overflow: hidden;">
+                        <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--accent-pink); font-size: 0.95rem; user-select: none;">
+                            <span>📁 Rok ${year} (${gaps.length} volných oken)</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid rgba(250, 204, 21, 0.2);">
+                            ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
+                        </div>
+                    </div>`;
+            });
+
+            html += `</div>`;
+
+            analyticsContent.innerHTML = html;
+
+            analyticsContent.querySelectorAll(".accordion-header").forEach(header => {
+                header.addEventListener("click", () => {
+                    const targetYear = header.getAttribute("data-year-target");
+                    const content = document.getElementById("year_content_" + targetYear);
+                    const arrow = header.querySelector("span:last-child");
+                    if (content.style.display === "none") {
+                        content.style.display = "block";
+                        arrow.textContent = "▲";
+                    } else {
+                        content.style.display = "none";
+                        arrow.textContent = "▼";
+                    }
+                });
+            });
+
+            analyticsModal.style.display = "flex";
+        });
+
         modalSave.addEventListener("click", () => {
             const type = document.getElementById("modalType").value;
             const year = document.getElementById("modalYear").value;
+            const date = document.getElementById("modalEventDate").value.trim();
             const title = document.getElementById("modalEventTitle").value.trim();
             const task = document.getElementById("modalTaskText").value.trim();
             const highlighted = document.getElementById("modalHighlight").checked;
 
-            if (!title) {
-                alert("Vyplňte název události/úkolu.");
+            if (!date) {
+                alert("Vyplňte prosím datum (např. 1.–28. 9. nebo 17. 12.).");
                 return;
             }
 
             customItems.push({
-                type: type,
-                year: year,
-                title: title,
+                type: type, year: year, date: date, title: title,
                 task: type === "task" ? task : "",
-                checked: false,
-                highlighted: highlighted
+                checked: false, highlighted: highlighted
             });
 
             localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
             renderCalendar();
 
+            document.getElementById("modalEventDate").value = "";
             document.getElementById("modalEventTitle").value = "";
             document.getElementById("modalTaskText").value = "";
             document.getElementById("modalType").value = "event";
@@ -815,63 +1030,68 @@
     });
 </script>
 
-<!-- Modal pro přidání nové události / úkolu -->
-<div id="addModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; padding: 12px; box-sizing: border-box;">
-    <div style="background: var(--card-bg); padding: 20px; border-radius: 12px; width: 100%; max-width: 450px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
-        <h2 style="margin-top: 0; font-size: 1.2rem; color: var(--text-color);">Přidat novou položku</h2>
-        
+<div id="addModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2>Přidat novou položku</h2>
         <div style="margin-bottom: 12px;">
-            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Typ:</label>
-            <select id="modalType" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); font-size: 1rem;">
+            <label>Typ:</label>
+            <select id="modalType">
                 <option value="event">Událost (bez okénka)</option>
                 <option value="task">Úkol (s okénkem k odškrtnutí)</option>
             </select>
         </div>
-
         <div style="margin-bottom: 12px;">
-            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Rok:</label>
-            <select id="modalYear" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); font-size: 1rem;">
+            <label>Rok:</label>
+            <select id="modalYear">
                 <option value="2026">2026</option>
                 <option value="2027">2027</option>
                 <option value="2028">2028</option>
             </select>
         </div>
-
         <div style="margin-bottom: 12px;">
-            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Název události (včetně měsíce v textu, např. 15. 3. nebo Březen):</label>
-            <input type="text" id="modalEventTitle" placeholder="např. 15. 3. — Hra" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
+            <label>Datum (pro analýzu a řazení):</label>
+            <input type="text" id="modalEventDate" placeholder="např. 1.–28. 9. nebo 17. 12.">
         </div>
-
+        <div style="margin-bottom: 12px;">
+            <label>Název události / hry (volitelně):</label>
+            <input type="text" id="modalEventTitle" placeholder="např. The Witcher 3 ✨">
+        </div>
         <div id="taskFieldContainer" style="margin-bottom: 12px; display: none;">
-            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Název úkolu (odškrtávací položka):</label>
-            <input type="text" id="modalTaskText" placeholder="např. Přečíst knihu..." style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
+            <label>Název úkolu (odškrtávací položka):</label>
+            <input type="text" id="modalTaskText" placeholder="např. Přečíst knihu...">
         </div>
-
         <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-            <input type="checkbox" id="modalHighlight" style="width: 20px; height: 20px; accent-color: var(--accent-blue); cursor: pointer;">
-            <label for="modalHighlight" style="font-size: 0.9rem; color: var(--text-color); cursor: pointer; user-select: none;">Zvýrazněná událost (barevné pozadí / záře)</label>
+            <input type="checkbox" id="modalHighlight" style="width: 20px; height: 20px; accent-color: var(--accent-pink); cursor: pointer;">
+            <label for="modalHighlight" style="margin-bottom: 0; cursor: pointer; user-select: none;">Zvýrazněná událost (barevné pozadí / záře)</label>
         </div>
-
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
-            <button id="modalCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
-            <button id="modalSave" style="background: var(--accent-blue); color: #0f172a; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Uložit</button>
+            <button id="modalCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
+            <button id="modalSave" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Uložit</button>
         </div>
     </div>
 </div>
 
-<!-- Modal pro přidání nového podúkolu k události -->
-<div id="subtaskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; padding: 12px; box-sizing: border-box;">
-    <div style="background: var(--card-bg); padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
-        <h2 style="margin-top: 0; font-size: 1.2rem; color: var(--text-color);">Přidat nový úkol</h2>
-        
+<div id="subtaskModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 400px;">
+        <h2>Přidat nový úkol</h2>
         <div style="margin-bottom: 12px;">
-            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Zadej název nového úkolu:</label>
-            <input type="text" id="subtaskTextInput" placeholder="např. Koupit lístky..." style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
+            <label>Zadej název nového úkolu:</label>
+            <input type="text" id="subtaskTextInput" placeholder="např. Koupit lístky...">
         </div>
-
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
-            <button id="subtaskCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
-            <button id="subtaskSave" style="background: var(--accent-green); color: #0f172a; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Přidat</button>
+            <button id="subtaskCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
+            <button id="subtaskSave" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Přidat</button>
+        </div>
+    </div>
+</div>
+
+<div id="analyticsModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 480px; max-height: 85vh; display: flex; flex-direction: column;">
+        <h2>📊 Volná okna v kalendáři</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0; margin-bottom: 14px;">Kliknutím na rok rozbalíš měsíce s největším klidem.</p>
+        <div id="analyticsContent" style="overflow-y: auto; flex-grow: 1; padding-right: 4px; margin-bottom: 16px;"></div>
+        <div style="display: flex; justify-content: flex-end;">
+            <button id="analyticsClose" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; width: 100%;">Zavřít</button>
         </div>
     </div>
 </div>
