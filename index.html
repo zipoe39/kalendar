@@ -457,20 +457,53 @@
             h1 { font-size: 1.5rem; }
             .year-section { padding: 12px; }
             .event-header {
-                flex-direction: column;
-                align-items: flex-start;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                grid-template-areas:
+                    "badge actions"
+                    "text text";
+                align-items: center;
                 gap: 8px;
             }
-            .event-header-actions, .task-item-actions {
+            .event-date-badge {
+                grid-area: badge;
+            }
+            .editable-text {
+                grid-area: text;
+                width: 100%;
+            }
+            .event-header-actions {
+                grid-area: actions;
                 display: flex;
                 gap: 6px;
-                width: 100%;
                 justify-content: flex-end;
-                margin-top: 4px;
+                width: 100%;
             }
-            .task-item { flex-wrap: wrap; }
-            .task-item label { width: calc(100% - 30px); }
-            .task-item .edit-task-btn, .task-item .delete-task-btn { margin-left: auto; }
+            
+            .task-item {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                grid-template-areas:
+                    "checkbox actions"
+                    "label label";
+                align-items: center;
+                gap: 8px;
+            }
+            .task-item input[type="checkbox"] {
+                grid-area: checkbox;
+            }
+            .task-item label {
+                grid-area: label;
+                width: 100%;
+            }
+            .task-item-actions {
+                grid-area: actions;
+                display: flex;
+                gap: 6px;
+                justify-content: flex-end;
+                width: 100%;
+                margin-left: 0 !important;
+            }
         }
     </style>
 </head>
@@ -776,12 +809,12 @@
                 let innerContent = `
                     <div class="event-header">
                         <span class="event-date-badge editable-date" style="cursor: pointer;" title="Kliknutím upravíš datum">${item.date}</span>
-                        <span class="editable-text" style="flex-grow: 1;">${item.title}</span>
                         <div class="event-header-actions">
                             <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink);">+ Úkol</button>
                             <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
                             <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
                         </div>
+                        <span class="editable-text" style="flex-grow: 1;">${item.title}</span>
                     </div>
                     <ul class="task-list">`;
 
