@@ -460,48 +460,61 @@
             h1 { font-size: 1.5rem; }
             .year-section { padding: 12px; }
             
-            /* Úprava hlavičky události: datum vlevo, text vedle něj, tlačítka vpravo */
+            /* Optimalizace pro mobil: menší mezery a kompaktnější tlačítka pro maximální prostor na text */
             .event-header {
                 display: flex;
                 align-items: center;
                 flex-wrap: nowrap;
-                gap: 8px;
+                gap: 4px;
             }
             .event-date-badge {
                 flex-shrink: 0;
+                padding: 2px 4px;
+                font-size: 0.75rem;
             }
             .editable-text {
                 flex-grow: 1;
                 min-width: 0;
+                font-size: 0.9rem;
             }
             .event-header-actions {
                 display: flex;
-                gap: 4px;
+                gap: 2px;
                 flex-shrink: 0;
             }
+            .event-header button {
+                padding: 2px 5px;
+                font-size: 0.7rem;
+            }
             
-            /* Úprava úkolů: checkbox vlevo, text vedle něj, tlačítka vpravo */
             .task-item {
                 display: flex;
                 align-items: center;
                 flex-wrap: nowrap;
-                gap: 8px;
+                gap: 6px;
+                padding: 8px;
             }
             .task-item input[type="checkbox"] {
                 flex-shrink: 0;
+                width: 16px;
+                height: 16px;
             }
             .task-item label {
                 flex-grow: 1;
                 min-width: 0;
+                font-size: 0.85rem;
             }
             .task-item-actions {
                 display: flex;
-                gap: 4px;
+                gap: 2px;
                 flex-shrink: 0;
                 margin-left: 0 !important;
             }
+            .task-item button {
+                padding: 2px 5px;
+                font-size: 0.7rem;
+            }
 
-            /* Výběr data zůstává jako vycentrovaný overlay */
             .date-picker-dropdown {
                 position: fixed;
                 top: 50%;
