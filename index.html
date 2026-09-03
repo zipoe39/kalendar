@@ -129,7 +129,6 @@
             margin-bottom: 0;
         }
 
-        /* Hlavní řádek: datum + text nahoře */
         .event-main-row {
             display: flex;
             align-items: center;
@@ -158,20 +157,21 @@
             word-break: break-word;
         }
 
-        .event-header-actions {
-            display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-            margin-left: auto;
-        }
-
-        /* Řádek pod tím: akce a úkoly */
         .event-sub-row {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: flex-end;
+            align-items: center;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding-top: 10px;
+            margin-bottom: 8px;
+            gap: 6px;
+            flex-wrap: nowrap;
+        }
+
+        .event-sub-actions {
+            display: flex;
+            gap: 4px;
+            align-items: center;
         }
 
         .task-list {
@@ -222,10 +222,7 @@
 
         button {
             touch-action: manipulation;
-        }
-
-        button {
-            padding: 4px 10px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-size: 0.8rem;
             cursor: pointer;
@@ -665,12 +662,12 @@
                 const btn = document.createElement("button");
                 btn.className = "edit-task-btn";
                 btn.textContent = "Upravit";
-                btn.style.cssText = "background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);";
+                btn.style.cssText = "background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;";
 
                 const delBtn = document.createElement("button");
                 delBtn.textContent = "✕";
                 delBtn.className = "delete-task-btn";
-                delBtn.style.cssText = "display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;";
+                delBtn.style.cssText = "display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; white-space: nowrap;";
 
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -795,16 +792,13 @@
                     <div class="event-main-row">
                         <span class="event-date-badge editable-date" style="cursor: pointer;" title="Kliknutím upravíš datum">${item.date}</span>
                         <span class="editable-text">${item.title}</span>
-                        <div class="event-header-actions">
-                            <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
-                            <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
-                        </div>
                     </div>
                     <div class="event-sub-row">
-                        <div>
-                            <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink);">+ Úkol</button>
-                        </div>
-                        <ul class="task-list">`;
+                        <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink); white-space: nowrap;">+ Úkol</button>
+                        <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;">Upravit</button>
+                        <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; white-space: nowrap;">✕ Smazat</button>
+                    </div>
+                    <ul class="task-list">`;
 
                 if (item.type === "task" && item.task) {
                     innerContent += `
@@ -824,7 +818,7 @@
                     });
                 }
 
-                innerContent += `</ul></div>`;
+                innerContent += `</ul>`;
                 groupDiv.innerHTML = innerContent;
 
                 if (item.type === "task" && item.task) {
