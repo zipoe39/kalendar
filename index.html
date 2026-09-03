@@ -7,9 +7,9 @@
     <style>
         :root {
             --bg-color: #000000;
-            --year-bg: #141417;       /* Ještě tmavší pozadí roku */
-            --month-bg: #222228;      /* Světlejší a znatelně odlišené pozadí měsíce */
-            --card-bg: #121214;       /* Tmavší pozadí karet pro kontrast */
+            --year-bg: #000000;       /* Změněno na černou jako celkové pozadí[cite: 4] */
+            --month-bg: #222228;      /* Světlejší a znatelně odlišené pozadí měsíce[cite: 4] */
+            --card-bg: #121214;       /* Tmavší pozadí karet pro kontrast[cite: 4] */
             --input-bg: #111111;
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
@@ -17,8 +17,8 @@
             --accent-green: #facc15;
             --accent-yellow: #facc15;
             --accent-blue: #38bdf8;
-            --border-color: #52525b;  /* Výraznější okraje */
-            --highlight-bg: #1e1b10;  /* Jemně žlutohnědé pozadí pro zvýrazněné události */
+            --border-color: #52525b;  /* Výraznější okraje[cite: 4] */
+            --highlight-bg: #1e1b10;  /* Jemně žlutohnědé pozadí pro zvýrazněné události[cite: 4] */
             --highlight-border: #facc15;
         }
 
@@ -62,9 +62,13 @@
             background-color: var(--year-bg);
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 40px; /* Zvětšena mezera mezi roky */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border: 2px solid var(--border-color);
+        }
+
+        .year-section:last-child {
+            margin-bottom: 20px;
         }
 
         .year-title {
@@ -301,7 +305,7 @@
         <h1>Kalendář</h1>
         <div class="header-buttons">
             <button id="addEventBtn" style="background: linear-gradient(to right, #facc15, #818cf8); color: #000000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">+ Přidat událost / úkol</button>
-            <button id="analyticsBtn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">📊 Analýza vytížení</button>
+            <button id="analyticsBtn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Volná okna</button>
         </div>
     </header>
 
@@ -1087,7 +1091,7 @@
 
 <div id="analyticsModal" class="modal-overlay">
     <div class="modal-box" style="max-width: 480px; max-height: 85vh; display: flex; flex-direction: column;">
-        <h2>📊 Volná okna v kalendáři</h2>
+        <h2>Volná okna v kalendáři</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0; margin-bottom: 14px;">Kliknutím na rok rozbalíš měsíce s největším klidem.</p>
         <div id="analyticsContent" style="overflow-y: auto; flex-grow: 1; padding-right: 4px; margin-bottom: 16px;"></div>
         <div style="display: flex; justify-content: flex-end;">
