@@ -1183,7 +1183,7 @@
                     <div style="background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; overflow: hidden;">
                         <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #f43f5e; font-size: 0.95rem; user-select: none; outline: none;">
                             <span style="display: flex; align-items: center; gap: 8px; color: #ffffff;">📁 Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
-                            <span style="color: #a1a1aa; font-size: 0.8rem;">▼</span>
+                            <span class="accordion-arrow" style="color: #a1a1aa; font-size: 0.8rem;">▼</span>
                         </div>
                         <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid #27272a;">
                             ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px; color: #e4e4e7;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
@@ -1199,7 +1199,7 @@
                 header.addEventListener("click", () => {
                     const targetYear = header.getAttribute("data-year-target");
                     const content = document.getElementById("year_content_" + targetYear);
-                    const arrow = header.querySelector("span:last-child span, span:last-child");
+                    const arrow = header.querySelector(".accordion-arrow");
                     if (content.style.display === "none") {
                         content.style.display = "block";
                         if (arrow) arrow.textContent = "▲";
