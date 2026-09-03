@@ -7,9 +7,9 @@
     <style>
         :root {
             --bg-color: #000000;
-            --year-bg: #000000;       /* Změněno na černou jako celkové pozadí[cite: 4] */
-            --month-bg: #222228;      /* Světlejší a znatelně odlišené pozadí měsíce[cite: 4] */
-            --card-bg: #121214;       /* Tmavší pozadí karet pro kontrast[cite: 4] */
+            --year-bg: #000000;       
+            --month-bg: #222228;      
+            --card-bg: #121214;       
             --input-bg: #111111;
             --text-color: #f8fafc;
             --text-muted: #94a3b8;
@@ -17,8 +17,8 @@
             --accent-green: #facc15;
             --accent-yellow: #facc15;
             --accent-blue: #38bdf8;
-            --border-color: #52525b;  /* Výraznější okraje[cite: 4] */
-            --highlight-bg: #1e1b10;  /* Jemně žlutohnědé pozadí pro zvýrazněné události[cite: 4] */
+            --border-color: #52525b;  
+            --highlight-bg: #1e1b10;  
             --highlight-border: #facc15;
         }
 
@@ -62,7 +62,7 @@
             background-color: var(--year-bg);
             border-radius: 12px;
             padding: 16px;
-            margin-bottom: 40px; /* Zvětšena mezera mezi roky */
+            margin-bottom: 40px; 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border: 2px solid var(--border-color);
         }
@@ -276,6 +276,182 @@
             color: #8e8e93;
         }
 
+        .date-picker-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .date-input-trigger {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: #2c2c2e;
+            color: #ffffff;
+            border: 1px solid #48484a;
+            box-sizing: border-box;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .date-input-trigger:hover {
+            border-color: var(--accent-pink);
+        }
+
+        .date-picker-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 340px;
+            background: #1c1c1e;
+            border: 1px solid #3a3a3c;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 1100;
+            padding: 16px;
+            box-sizing: border-box;
+            color: #ffffff;
+        }
+
+        .dp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        .dp-nav-btn {
+            background: none;
+            border: none;
+            color: #d1d5db;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .dp-nav-btn:hover {
+            background: #2c2c2e;
+            color: #ffffff;
+        }
+
+        .dp-mode-switch {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            background: #2c2c2e;
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .dp-mode-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .dp-mode-btn.active {
+            background: var(--accent-pink);
+            color: #000000;
+        }
+
+        .dp-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .dp-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .dp-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #ffffff;
+            background: transparent;
+            border: none;
+        }
+
+        .dp-day:hover {
+            background: #2c2c2e;
+        }
+
+        .dp-day.muted {
+            color: #6b7280;
+        }
+
+        .dp-day.selected {
+            background: #38bdf8 !important;
+            color: #000000 !important;
+            font-weight: bold;
+        }
+
+        .dp-day.in-range {
+            background: rgba(56, 189, 248, 0.2);
+            color: #ffffff;
+            border-radius: 0;
+        }
+
+        .dp-day.range-start {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            background: #38bdf8 !important;
+            color: #000000 !important;
+            font-weight: bold;
+        }
+
+        .dp-day.range-end {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            background: #38bdf8 !important;
+            color: #000000 !important;
+            font-weight: bold;
+        }
+
+        .dp-footer {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #3a3a3c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dp-apply-btn {
+            background: var(--accent-pink);
+            color: #000000;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 600px) {
             body { padding: 8px; }
             h1 { font-size: 1.5rem; }
@@ -300,7 +476,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="calendarContainer">
     <header>
         <h1>Kalendář</h1>
         <div class="header-buttons">
@@ -308,21 +484,6 @@
             <button id="analyticsBtn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Volná okna</button>
         </div>
     </header>
-
-    <div class="year-section" data-year="2026">
-        <div class="year-title">2026</div>
-        <div class="months-container"></div>
-    </div>
-
-    <div class="year-section" data-year="2027">
-        <div class="year-title">2027</div>
-        <div class="months-container"></div>
-    </div>
-
-    <div class="year-section" data-year="2028">
-        <div class="year-title">2028</div>
-        <div class="months-container"></div>
-    </div>
 </div>
 
 <script>
@@ -500,6 +661,7 @@
 
         function attachTaskItemFeatures(taskItem, updateCallback, onDeleteCallback) {
             const label = taskItem.querySelector("label");
+            const checkbox = taskItem.querySelector("input[type='checkbox']");
             if (!taskItem.querySelector(".edit-task-btn")) {
                 const actionsDiv = document.createElement("div");
                 actionsDiv.className = "task-item-actions";
@@ -523,6 +685,7 @@
                         label.style.borderBottom = "none";
                         btn.textContent = "Upravit";
                         delBtn.style.display = "none";
+                        if (checkbox) checkbox.disabled = false;
                         if (updateCallback) updateCallback(label.textContent);
                     } else {
                         label.setAttribute("contenteditable", "true");
@@ -530,6 +693,7 @@
                         label.focus();
                         btn.textContent = "Uložit";
                         delBtn.style.display = "inline-block";
+                        if (checkbox) checkbox.disabled = true;
                     }
                 });
 
@@ -547,8 +711,32 @@
         }
 
         function renderCalendar() {
+            const container = document.getElementById("calendarContainer");
+            
+            const headerEl = container.querySelector("header");
+            container.innerHTML = "";
+            container.appendChild(headerEl);
+
+            const allYearsSet = new Set(["2026", "2027", "2028"]);
+            defaultEvents.forEach(ev => allYearsSet.add(ev.year));
+            customItems.forEach(item => { if (item.year) allYearsSet.add(item.year); });
+
+            const sortedYears = Array.from(allYearsSet).sort((a, b) => parseInt(a) - parseInt(b));
+            const activeMonthsByYear = {};
+
+            sortedYears.forEach(y => {
+                activeMonthsByYear[y] = new Set();
+                const yearSec = document.createElement("div");
+                yearSec.className = "year-section";
+                yearSec.setAttribute("data-year", y);
+                yearSec.innerHTML = `
+                    <div class="year-title">${y}</div>
+                    <div class="months-container"></div>
+                `;
+                container.appendChild(yearSec);
+            });
+
             const yearSections = document.querySelectorAll(".year-section");
-            const activeMonthsByYear = { "2026": new Set(), "2027": new Set(), "2028": new Set() };
 
             function registerMonth(year, dateStr) {
                 const dateInfo = extractDateInfo(dateStr);
@@ -590,6 +778,14 @@
                 }
                 yearSec.style.display = monthsContainer.children.length === 0 ? "none" : "block";
             });
+
+            const monthItemsMap = {};
+
+            function addGroupToMap(year, monthNum, dayNum, groupDiv) {
+                const key = `${year}-${monthNum}`;
+                if (!monthItemsMap[key]) monthItemsMap[key] = [];
+                monthItemsMap[key].push({ element: groupDiv, day: dayNum });
+            }
 
             defaultEvents.forEach((ev) => {
                 if (hiddenGroups.includes(ev.groupIndex)) return;
@@ -647,7 +843,6 @@
 
                 innerHtml += `</ul>`;
                 groupDiv.innerHTML = innerHtml;
-                targetMonthSec.appendChild(groupDiv);
 
                 const dateBadge = groupDiv.querySelector(".editable-date");
                 const textSpan = groupDiv.querySelector(".editable-text");
@@ -727,6 +922,8 @@
                         renderCalendar();
                     });
                 });
+
+                addGroupToMap(ev.year, dateInfo.month, dateInfo.day, groupDiv);
             });
 
             customItems.forEach((item, index) => {
@@ -774,7 +971,6 @@
 
                 innerContent += `</ul>`;
                 groupDiv.innerHTML = innerContent;
-                targetMonthSec.appendChild(groupDiv);
 
                 if (item.type === "task" && item.task) {
                     const cb = groupDiv.querySelector("input[type='checkbox']");
@@ -854,6 +1050,22 @@
                         localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
                         renderCalendar();
                     }
+                });
+
+                addGroupToMap(item.year, dateInfo.month, dateInfo.day, groupDiv);
+            });
+
+            Object.keys(monthItemsMap).forEach(key => {
+                const [yStr, mStr] = key.split("-");
+                const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === yStr);
+                if (!yearSec) return;
+                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${mStr}"]`);
+                if (!targetMonthSec) return;
+
+                monthItemsMap[key].sort((a, b) => a.day - b.day);
+
+                monthItemsMap[key].forEach(itemObj => {
+                    targetMonthSec.appendChild(itemObj.element);
                 });
             });
         }
@@ -968,13 +1180,13 @@
             years.forEach(year => {
                 const gaps = freeGapsByYear[year] || [];
                 html += `
-                    <div style="background: rgba(250, 204, 21, 0.08); border: 1px dashed var(--accent-pink); border-radius: 8px; overflow: hidden;">
-                        <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--accent-pink); font-size: 0.95rem; user-select: none;">
-                            <span>📁 Rok ${year} (${gaps.length} volných oken)</span>
-                            <span>▼</span>
+                    <div style="background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; overflow: hidden;">
+                        <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #f43f5e; font-size: 0.95rem; user-select: none; outline: none;">
+                            <span style="display: flex; align-items: center; gap: 8px; color: #ffffff;">📁 Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
+                            <span style="color: #a1a1aa; font-size: 0.8rem;">▼</span>
                         </div>
-                        <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid rgba(250, 204, 21, 0.2);">
-                            ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
+                        <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid #27272a;">
+                            ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px; color: #e4e4e7;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
                         </div>
                     </div>`;
             });
@@ -987,13 +1199,13 @@
                 header.addEventListener("click", () => {
                     const targetYear = header.getAttribute("data-year-target");
                     const content = document.getElementById("year_content_" + targetYear);
-                    const arrow = header.querySelector("span:last-child");
+                    const arrow = header.querySelector("span:last-child span, span:last-child");
                     if (content.style.display === "none") {
                         content.style.display = "block";
-                        arrow.textContent = "▲";
+                        if (arrow) arrow.textContent = "▲";
                     } else {
                         content.style.display = "none";
-                        arrow.textContent = "▼";
+                        if (arrow) arrow.textContent = "▼";
                     }
                 });
             });
@@ -1001,16 +1213,197 @@
             analyticsModal.style.display = "flex";
         });
 
+        let dpState = {
+            isOpen: false,
+            mode: 'single',
+            year: 2026,
+            month: 8,
+            singleDate: { day: 17, month: 9, year: 2026 },
+            rangeStart: null,
+            rangeEnd: null
+        };
+
+        const dpTrigger = document.getElementById("dpTrigger");
+        const dpDropdown = document.getElementById("dpDropdown");
+        const dpMonthYearText = document.getElementById("dpMonthYearText");
+        const dpGrid = document.getElementById("dpGrid");
+        const dpModeSingle = document.getElementById("dpModeSingle");
+        const dpModeRange = document.getElementById("dpModeRange");
+        const dpApplyBtn = document.getElementById("dpApplyBtn");
+        const dpPrevBtn = document.getElementById("dpPrevBtn");
+        const dpNextBtn = document.getElementById("dpNextBtn");
+        const modalEventDateInput = document.getElementById("modalEventDate");
+
+        function updateTriggerText() {
+            if (dpState.mode === 'single') {
+                dpTrigger.textContent = `${dpState.singleDate.day}. ${dpState.singleDate.month}. ${dpState.singleDate.year}`;
+                modalEventDateInput.value = `${dpState.singleDate.day}. ${dpState.singleDate.month}.`;
+                modalEventDateInput.setAttribute("data-selected-year", dpState.singleDate.year);
+            } else {
+                if (dpState.rangeStart && dpState.rangeEnd) {
+                    dpTrigger.textContent = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — ${dpState.rangeEnd.day}. ${dpState.rangeEnd.month}. ${dpState.rangeEnd.year}`;
+                    modalEventDateInput.value = `${dpState.rangeStart.day}.–${dpState.rangeEnd.day}. ${dpState.rangeEnd.month}.`;
+                    modalEventDateInput.setAttribute("data-selected-year", dpState.rangeEnd.year);
+                } else if (dpState.rangeStart) {
+                    dpTrigger.textContent = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — vyberte konec`;
+                    modalEventDateInput.value = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}.`;
+                    modalEventDateInput.setAttribute("data-selected-year", dpState.rangeStart.year);
+                } else {
+                    dpTrigger.textContent = "Vyberte rozmezí od–do";
+                    modalEventDateInput.value = "";
+                    modalEventDateInput.setAttribute("data-selected-year", dpState.year);
+                }
+            }
+        }
+
+        function renderDatePickerGrid() {
+            const cMonthObj = monthNames[dpState.month];
+            dpMonthYearText.textContent = `${cMonthObj.name} ${dpState.year}`;
+            dpGrid.innerHTML = "";
+
+            const firstDayIndex = (new Date(dpState.year, dpState.month, 1).getDay() + 6) % 7; 
+            const daysInCurrMonth = getDaysInMonth(dpState.month + 1, dpState.year);
+            const prevMonthDays = dpState.month === 0 ? getDaysInMonth(12, dpState.year - 1) : getDaysInMonth(dpState.month, dpState.year);
+
+            for (let i = firstDayIndex - 1; i >= 0; i--) {
+                const dayNum = prevMonthDays - i;
+                const btn = document.createElement("button");
+                btn.className = "dp-day muted";
+                btn.textContent = dayNum;
+                btn.addEventListener("click", () => {
+                    dpState.month = dpState.month === 0 ? 11 : dpState.month - 1;
+                    if (dpState.month === 11) dpState.year--;
+                    renderDatePickerGrid();
+                });
+                dpGrid.appendChild(btn);
+            }
+
+            for (let d = 1; d <= daysInCurrMonth; d++) {
+                const btn = document.createElement("button");
+                btn.className = "dp-day";
+                btn.textContent = d;
+
+                const curY = dpState.year;
+                const curM = dpState.month + 1;
+
+                if (dpState.mode === 'single') {
+                    if (dpState.singleDate.day === d && dpState.singleDate.month === curM && dpState.singleDate.year === curY) {
+                        btn.classList.add("selected");
+                    }
+                    btn.addEventListener("click", () => {
+                        dpState.singleDate = { day: d, month: curM, year: curY };
+                        updateTriggerText();
+                        renderDatePickerGrid();
+                    });
+                } else {
+                    const timeVal = new Date(curY, dpState.month, d).getTime();
+                    let startTime = dpState.rangeStart ? new Date(dpState.rangeStart.year, dpState.rangeStart.month - 1, dpState.rangeStart.day).getTime() : null;
+                    let endTime = dpState.rangeEnd ? new Date(dpState.rangeEnd.year, dpState.rangeEnd.month - 1, dpState.rangeEnd.day).getTime() : null;
+
+                    if (startTime && timeVal === startTime) btn.classList.add("range-start");
+                    if (endTime && timeVal === endTime) btn.classList.add("range-end");
+                    if (startTime && endTime && timeVal > startTime && timeVal < endTime) btn.classList.add("in-range");
+
+                    btn.addEventListener("click", () => {
+                        if (!dpState.rangeStart || (dpState.rangeStart && dpState.rangeEnd)) {
+                            dpState.rangeStart = { day: d, month: curM, year: curY };
+                            dpState.rangeEnd = null;
+                        } else {
+                            const stTime = new Date(dpState.rangeStart.year, dpState.rangeStart.month - 1, dpState.rangeStart.day).getTime();
+                            if (timeVal < stTime) {
+                                dpState.rangeStart = { day: d, month: curM, year: curY };
+                            } else {
+                                dpState.rangeEnd = { day: d, month: curM, year: curY };
+                            }
+                        }
+                        updateTriggerText();
+                        renderDatePickerGrid();
+                    });
+                }
+
+                dpGrid.appendChild(btn);
+            }
+
+            const totalRendered = firstDayIndex + daysInCurrMonth;
+            const remainingCells = totalRendered <= 35 ? 35 - totalRendered : 42 - totalRendered;
+            for (let d = 1; d <= remainingCells; d++) {
+                const btn = document.createElement("button");
+                btn.className = "dp-day muted";
+                btn.textContent = d;
+                btn.addEventListener("click", () => {
+                    dpState.month = dpState.month === 11 ? 0 : dpState.month + 1;
+                    if (dpState.month === 0) dpState.year++;
+                    renderDatePickerGrid();
+                });
+                dpGrid.appendChild(btn);
+            }
+        }
+
+        dpTrigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dpState.isOpen = !dpState.isOpen;
+            dpDropdown.style.display = dpState.isOpen ? "block" : "none";
+            if (dpState.isOpen) renderDatePickerGrid();
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!document.getElementById("datePickerWrapper").contains(e.target)) {
+                dpState.isOpen = false;
+                dpDropdown.style.display = "none";
+            }
+        });
+
+        dpModeSingle.addEventListener("click", () => {
+            dpState.mode = 'single';
+            dpModeSingle.classList.add("active");
+            dpModeRange.classList.remove("active");
+            renderDatePickerGrid();
+            updateTriggerText();
+        });
+
+        dpModeRange.addEventListener("click", () => {
+            dpState.mode = 'range';
+            dpModeRange.classList.add("active");
+            dpModeSingle.classList.remove("active");
+            renderDatePickerGrid();
+            updateTriggerText();
+        });
+
+        dpPrevBtn.addEventListener("click", () => {
+            dpState.month--;
+            if (dpState.month < 0) {
+                dpState.month = 11;
+                dpState.year--;
+            }
+            renderDatePickerGrid();
+        });
+
+        dpNextBtn.addEventListener("click", () => {
+            dpState.month++;
+            if (dpState.month > 11) {
+                dpState.month = 0;
+                dpState.year++;
+            }
+            renderDatePickerGrid();
+        });
+
+        dpApplyBtn.addEventListener("click", () => {
+            dpState.isOpen = false;
+            dpDropdown.style.display = "none";
+        });
+
+        updateTriggerText();
+
         modalSave.addEventListener("click", () => {
             const type = document.getElementById("modalType").value;
-            const year = document.getElementById("modalYear").value;
-            const date = document.getElementById("modalEventDate").value.trim();
+            const year = modalEventDateInput.getAttribute("data-selected-year") || "2026";
+            const date = modalEventDateInput.value.trim();
             const title = document.getElementById("modalEventTitle").value.trim();
             const task = document.getElementById("modalTaskText").value.trim();
             const highlighted = document.getElementById("modalHighlight").checked;
 
             if (!date) {
-                alert("Vyplňte prosím datum (např. 1.–28. 9. nebo 17. 12.).");
+                alert("Vyplňte prosím datum.");
                 return;
             }
 
@@ -1023,7 +1416,6 @@
             localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
             renderCalendar();
 
-            document.getElementById("modalEventDate").value = "";
             document.getElementById("modalEventTitle").value = "";
             document.getElementById("modalTaskText").value = "";
             document.getElementById("modalType").value = "event";
@@ -1045,16 +1437,30 @@
             </select>
         </div>
         <div style="margin-bottom: 12px;">
-            <label>Rok:</label>
-            <select id="modalYear">
-                <option value="2026">2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-            </select>
-        </div>
-        <div style="margin-bottom: 12px;">
-            <label>Datum (pro analýzu a řazení):</label>
-            <input type="text" id="modalEventDate" placeholder="např. 1.–28. 9. nebo 17. 12.">
+            <label>Datum / rozmezí:</label>
+            <div class="date-picker-wrapper" id="datePickerWrapper">
+                <button type="button" class="date-input-trigger" id="dpTrigger">17. 9. 2026 <span>📅</span></button>
+                <div class="date-picker-dropdown" id="dpDropdown">
+                    <div class="dp-header">
+                        <button type="button" class="dp-nav-btn" id="dpPrevBtn">&lt;</button>
+                        <span id="dpMonthYearText">Září 2026</span>
+                        <button type="button" class="dp-nav-btn" id="dpNextBtn">&gt;</button>
+                    </div>
+                    <div class="dp-mode-switch">
+                        <button type="button" class="dp-mode-btn active" id="dpModeSingle">Jedno datum</button>
+                        <button type="button" class="dp-mode-btn" id="dpModeRange">Rozmezí (Od–Do)</button>
+                    </div>
+                    <div class="dp-weekdays">
+                        <span>Po</span><span>Út</span><span>St</span><span>Čt</span><span>Pá</span><span>So</span><span>Ne</span>
+                    </div>
+                    <div class="dp-grid" id="dpGrid"></div>
+                    <div class="dp-footer">
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Vyberte kliknutím</span>
+                        <button type="button" class="dp-apply-btn" id="dpApplyBtn">Hotovo</button>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="modalEventDate" value="17. 9." data-selected-year="2026">
         </div>
         <div style="margin-bottom: 12px;">
             <label>Název události / hry (volitelně):</label>
