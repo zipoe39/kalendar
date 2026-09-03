@@ -24,7 +24,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 12px;
             display: flex;
             justify-content: center;
         }
@@ -36,11 +36,11 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
             background: linear-gradient(to right, #f472b6, #818cf8);
             -webkit-background-clip: text;
@@ -50,21 +50,21 @@
         .year-section {
             background-color: var(--card-bg);
             border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 16px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             border: 1px solid var(--border-color);
         }
 
         .year-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         .year-2026 { color: var(--accent-pink); }
@@ -75,8 +75,8 @@
             background: rgba(15, 23, 42, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
+            padding: 12px;
+            margin-bottom: 14px;
         }
 
         .month-section:last-child {
@@ -84,9 +84,9 @@
         }
 
         .month-title {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             color: var(--accent-pink);
             display: flex;
             align-items: center;
@@ -99,11 +99,11 @@
         .year-section:nth-of-type(3) .month-title { color: var(--accent-yellow); }
 
         .item-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             background: rgba(15, 23, 42, 0.3);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 14px;
+            padding: 12px;
         }
 
         .item-group.highlighted-event {
@@ -130,28 +130,29 @@
 
         .event-header {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #e2e8f0;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
         .year-section:nth-of-type(1) .highlighted-event .event-header {
             color: var(--accent-pink);
-            font-size: 1.15rem;
         }
 
         .year-section:nth-of-type(2) .highlighted-event .event-header {
             color: var(--accent-green);
-            font-size: 1.15rem;
         }
 
         .year-section:nth-of-type(3) .highlighted-event .event-header {
             color: var(--accent-yellow);
-            font-size: 1.15rem;
+        }
+
+        .editable-text {
+            word-break: break-word;
         }
 
         .task-list {
@@ -161,15 +162,14 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            padding-left: 4px;
         }
 
         .task-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: rgba(15, 23, 42, 0.5);
-            padding: 10px 14px;
+            padding: 10px 12px;
             border-radius: 8px;
             border: 1px solid rgba(51, 65, 85, 0.5);
             transition: all 0.2s ease;
@@ -181,10 +181,11 @@
         }
 
         .task-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             accent-color: var(--accent-pink);
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .year-section:nth-of-type(2) .task-item input[type="checkbox"] { accent-color: var(--accent-green); }
@@ -195,11 +196,72 @@
             font-size: 0.95rem;
             flex-grow: 1;
             user-select: none;
+            word-break: break-word;
         }
 
         .task-item input[type="checkbox"]:checked + label {
             text-decoration: line-through;
             color: var(--text-muted);
+        }
+
+        /* Tlačítka akcí pro lepší ovladatelnost na mobilu */
+        button {
+            touch-action: manipulation;
+        }
+
+        .event-header button, .task-item button {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Responsivní úpravy pro malé obrazovky (mobily) */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .year-section {
+                padding: 12px;
+            }
+
+            .event-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .event-header > span.editable-text {
+                width: 100%;
+                font-size: 1.05rem;
+            }
+
+            /* Akční tlačítka u nadpisu a úkolů hezky vedle sebe na plnou šířku řádku */
+            .event-header-actions, .task-item-actions {
+                display: flex;
+                gap: 6px;
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 4px;
+            }
+
+            .task-item {
+                flex-wrap: wrap;
+            }
+
+            .task-item label {
+                width: calc(100% - 30px);
+            }
+
+            .task-item .edit-task-btn, .task-item .delete-task-btn {
+                margin-left: auto;
+            }
         }
     </style>
 </head>
@@ -208,8 +270,8 @@
 <div class="container">
     <header>
         <h1>Kalendář</h1>
-        <div style="margin-top: 15px;">
-            <button id="addEventBtn" style="background: linear-gradient(to right, #f472b6, #818cf8); color: #0f172a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">+ Přidat událost / úkol</button>
+        <div style="margin-top: 12px;">
+            <button id="addEventBtn" style="background: linear-gradient(to right, #f472b6, #818cf8); color: #0f172a; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); width: 100%; max-width: 300px;">+ Přidat událost / úkol</button>
         </div>
     </header>
 
@@ -331,16 +393,14 @@
                     };
                 }
             }
-            // Zkusíme najít textově měsíc
             for (let mObj of monthNames) {
                 if (text.toLowerCase().includes(mObj.name.toLowerCase())) {
                     return { day: 1, month: mObj.num };
                 }
             }
-            return { day: 999, month: 13 }; // Celý rok / nezařazeno
+            return { day: 999, month: 13 };
         }
 
-        // Výchozí pevné položky zapsané přímo v kódu
         const defaultEvents = [
             // 2026
             { year: "2026", title: "1.–28. 9.", tasks: ["Přečíst Zaklínač a jeho svět", "Dohrát The Callisto Protocol – DLC"], highlighted: false, groupIndex: 0 },
@@ -365,15 +425,23 @@
             { year: "2028", title: "2028 — The Witcher 4 ✨", tasks: ["Připomenout si příběh The Witcher 1", "Připomenout si příběh The Witcher 2", "Připomenout si příběh The Witcher 3", "Dohrát The Witcher 3: Songs of the Past"], highlighted: true, groupIndex: 15 }
         ];
 
-        function attachTaskItemFeatures(taskItem, updateCallback) {
+        function attachTaskItemFeatures(taskItem, updateCallback, onDeleteCallback) {
             const label = taskItem.querySelector("label");
-            const delBtn = taskItem.querySelector(".delete-sub-btn") || taskItem.querySelector(".delete-task-btn");
             
             if (!taskItem.querySelector(".edit-task-btn")) {
+                const actionsDiv = document.createElement("div");
+                actionsDiv.className = "task-item-actions";
+                actionsDiv.style.cssText = "display: flex; gap: 4px; margin-left: auto; align-items: center;";
+
                 const btn = document.createElement("button");
                 btn.className = "edit-task-btn";
                 btn.textContent = "Upravit";
-                btn.style.cssText = "margin-left: auto; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0;";
+                btn.style.cssText = "background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);";
+
+                const delBtn = document.createElement("button");
+                delBtn.textContent = "✕";
+                delBtn.className = "delete-task-btn";
+                delBtn.style.cssText = "display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;";
 
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -382,51 +450,80 @@
                         label.setAttribute("contenteditable", "false");
                         label.style.borderBottom = "none";
                         btn.textContent = "Upravit";
-                        if (delBtn) delBtn.style.display = "none";
+                        delBtn.style.display = "none";
                         if (updateCallback) updateCallback(label.textContent);
                     } else {
                         label.setAttribute("contenteditable", "true");
                         label.style.borderBottom = "1px dashed var(--accent-blue)";
                         label.focus();
                         btn.textContent = "Uložit";
-                        if (delBtn) delBtn.style.display = "inline";
+                        delBtn.style.display = "inline-block";
                     }
                 });
 
-                if (!delBtn) {
-                    const newDelBtn = document.createElement("button");
-                    newDelBtn.textContent = "✕";
-                    newDelBtn.className = "delete-task-btn";
-                    newDelBtn.style.cssText = "display: none; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 4px; margin-left: 4px;";
-                    taskItem.appendChild(btn);
-                    taskItem.appendChild(newDelBtn);
-                } else {
-                    taskItem.appendChild(btn);
-                }
+                delBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if (confirm("Opravdu chceš smazat tento úkol?")) {
+                        if (onDeleteCallback) onDeleteCallback();
+                    }
+                });
+
+                actionsDiv.appendChild(btn);
+                actionsDiv.appendChild(delBtn);
+                taskItem.appendChild(actionsDiv);
             }
         }
 
         function renderCalendar() {
             const yearSections = document.querySelectorAll(".year-section");
 
+            const activeMonthsByYear = {
+                "2026": new Set(),
+                "2027": new Set(),
+                "2028": new Set()
+            };
+
+            function registerMonth(year, title) {
+                const dateInfo = extractDateInfo(title);
+                activeMonthsByYear[year].add(dateInfo.month);
+            }
+
+            defaultEvents.forEach((ev) => {
+                if (!hiddenGroups.includes(ev.groupIndex)) {
+                    const headerText = localStorage.getItem("header_text_" + ev.groupIndex) || ev.title;
+                    registerMonth(ev.year, headerText);
+                }
+            });
+
+            customItems.forEach((item) => {
+                registerMonth(item.year, item.title);
+            });
+
             yearSections.forEach(yearSec => {
                 const yearStr = yearSec.getAttribute("data-year");
                 const monthsContainer = yearSec.querySelector(".months-container");
                 monthsContainer.innerHTML = "";
 
-                // Vytvoříme VŠECH 12 měsíců pro daný rok
                 for (let m = 1; m <= 12; m++) {
-                    const monthObj = monthNames.find(mn => mn.num === m);
-                    const monthSec = document.createElement("div");
-                    monthSec.className = "month-section";
-                    monthSec.setAttribute("data-month-num", m);
-                    monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name} ${yearStr}</div>`;
-                    monthsContainer.appendChild(monthSec);
+                    if (activeMonthsByYear[yearStr].has(m)) {
+                        const monthObj = monthNames.find(mn => mn.num === m);
+                        const monthSec = document.createElement("div");
+                        monthSec.className = "month-section";
+                        monthSec.setAttribute("data-month-num", m);
+                        monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name} ${yearStr}</div>`;
+                        monthsContainer.appendChild(monthSec);
+                    }
+                }
+
+                if (monthsContainer.children.length === 0) {
+                    yearSec.style.display = "none";
+                } else {
+                    yearSec.style.display = "block";
                 }
             });
 
-            // 1. Vykreslení výchozích událostí
-            defaultEvents.forEach((ev, evIndex) => {
+            // 1. Výchozí události
+            defaultEvents.forEach((ev) => {
                 if (hiddenGroups.includes(ev.groupIndex)) return;
 
                 const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === ev.year);
@@ -434,7 +531,8 @@
 
                 const headerText = localStorage.getItem("header_text_" + ev.groupIndex) || ev.title;
                 const dateInfo = extractDateInfo(headerText);
-                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`) || yearSec.querySelector(`.months-container .month-section[data-month-num="1"]`);
+                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
+                if (!targetMonthSec) return;
 
                 const groupDiv = document.createElement("div");
                 groupDiv.className = "item-group" + (ev.highlighted ? " highlighted-event" : "");
@@ -444,13 +542,14 @@
                 let innerHtml = `
                     <div class="event-header">
                         <span class="editable-text" style="flex-grow: 1;">${headerText}</span>
-                        <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 8px;">+ Přidat úkol</button>
-                        <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 6px;">Upravit</button>
-                        <button class="delete-group-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 6px;">Smazat</button>
+                        <div class="event-header-actions">
+                            <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green);">+ Úkol</button>
+                            <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
+                            <button class="delete-group-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
+                        </div>
                     </div>
                     <ul class="task-list">`;
 
-                // Výchozí úkoly
                 ev.tasks.forEach((taskText, tIndex) => {
                     const globalTaskIndex = ev.groupIndex * 100 + tIndex;
                     if (hiddenTasks.includes(globalTaskIndex)) return;
@@ -462,19 +561,17 @@
                     innerHtml += `
                         <li class="task-item" data-task-idx="${globalTaskIndex}">
                             <input type="checkbox" id="${uniqueId}" ${isChecked ? 'checked' : ''}>
-                            <label for="${uniqueId}" style="flex-grow: 1;">${finalTaskText}</label>
+                            <label for="${uniqueId}">${finalTaskText}</label>
                         </li>`;
                 });
 
-                // Přidané podúkoly k výchozím událostem
                 if (addedSubtasks[groupId]) {
                     addedSubtasks[groupId].forEach((sub, subIdx) => {
                         const subUniqueId = `default_sub_${groupId}_${subIdx}`;
                         innerHtml += `
                             <li class="task-item default-subtask-injected" data-sub-key="${groupId}_${subIdx}">
                                 <input type="checkbox" id="${subUniqueId}" ${sub.checked ? 'checked' : ''}>
-                                <label for="${subUniqueId}" style="flex-grow: 1;">${sub.text}</label>
-                                <button class="delete-sub-btn" style="display: none; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 4px; margin-left: 4px;">✕</button>
+                                <label for="${subUniqueId}">${sub.text}</label>
                             </li>`;
                     });
                 }
@@ -483,7 +580,6 @@
                 groupDiv.innerHTML = innerHtml;
                 targetMonthSec.appendChild(groupDiv);
 
-                // Událostní listenery pro výchozí položku
                 const textSpan = groupDiv.querySelector(".editable-text");
                 const editGroupBtn = groupDiv.querySelector(".edit-group-btn");
                 const delGroupBtn = groupDiv.querySelector(".delete-group-btn");
@@ -503,7 +599,7 @@
                         textSpan.style.borderBottom = "1px dashed var(--accent-blue)";
                         textSpan.focus();
                         editGroupBtn.textContent = "Uložit";
-                        delGroupBtn.style.display = "inline";
+                        delGroupBtn.style.display = "inline-block";
                     }
                 });
 
@@ -521,7 +617,6 @@
                     openSubtaskModal(groupId);
                 });
 
-                // Listenery pro úkoly v této skupině
                 groupDiv.querySelectorAll(".task-item[data-task-idx]").forEach(li => {
                     const taskIdx = parseInt(li.getAttribute("data-task-idx"), 10);
                     const cb = li.querySelector("input[type='checkbox']");
@@ -531,6 +626,10 @@
 
                     attachTaskItemFeatures(li, (newText) => {
                         localStorage.setItem("task_text_" + taskIdx, newText);
+                    }, () => {
+                        hiddenTasks.push(taskIdx);
+                        localStorage.setItem("hidden_tasks", JSON.stringify(hiddenTasks));
+                        renderCalendar();
                     });
                 });
 
@@ -545,30 +644,26 @@
                         localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
                     });
 
-                    li.querySelector(".delete-sub-btn").addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        if (confirm("Opravdu chceš smazat tento úkol?")) {
-                            addedSubtasks[groupId].splice(subIdxNum, 1);
-                            if (addedSubtasks[groupId].length === 0) delete addedSubtasks[groupId];
-                            localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
-                            renderCalendar();
-                        }
-                    });
-
                     attachTaskItemFeatures(li, (newText) => {
                         addedSubtasks[groupId][subIdxNum].text = newText;
                         localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
+                    }, () => {
+                        addedSubtasks[groupId].splice(subIdxNum, 1);
+                        if (addedSubtasks[groupId].length === 0) delete addedSubtasks[groupId];
+                        localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
+                        renderCalendar();
                     });
                 });
             });
 
-            // 2. Vykreslení uživatelsky přidaných položek
+            // 2. Vlastní přidané položky
             customItems.forEach((item, index) => {
                 const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === item.year);
                 if (!yearSec) return;
 
                 const dateInfo = extractDateInfo(item.title);
-                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`) || yearSec.querySelector(`.months-container .month-section[data-month-num="1"]`);
+                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
+                if (!targetMonthSec) return;
 
                 const groupDiv = document.createElement("div");
                 groupDiv.className = "item-group custom-injected" + (item.highlighted ? " highlighted-event" : "");
@@ -578,9 +673,11 @@
                 let innerContent = `
                     <div class="event-header">
                         <span class="editable-text" style="flex-grow: 1;">${item.title}</span>
-                        <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 8px;">+ Přidat úkol</button>
-                        <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 6px;">Upravit</button>
-                        <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; flex-shrink: 0; margin-left: 6px;">Smazat</button>
+                        <div class="event-header-actions">
+                            <button class="add-subtask-btn" style="background: rgba(74, 222, 128, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green);">+ Úkol</button>
+                            <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
+                            <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
+                        </div>
                     </div>
                     <ul class="task-list">`;
 
@@ -588,8 +685,7 @@
                     innerContent += `
                         <li class="task-item custom-main-task">
                             <input type="checkbox" id="custom_task_${index}" ${item.checked ? 'checked' : ''}>
-                            <label for="custom_task_${index}" style="flex-grow: 1;">${item.task}</label>
-                            <button class="delete-custom-task-btn" style="display: none; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 4px; margin-left: 4px;">✕</button>
+                            <label for="custom_task_${index}">${item.task}</label>
                         </li>`;
                 }
 
@@ -598,8 +694,7 @@
                         innerContent += `
                             <li class="task-item" data-sub-id="${customGroupId}_${subIdx}">
                                 <input type="checkbox" id="sub_${customGroupId}_${subIdx}" ${sub.checked ? 'checked' : ''}>
-                                <label for="sub_${customGroupId}_${subIdx}" style="flex-grow: 1;">${sub.text}</label>
-                                <button class="delete-sub-btn" style="display: none; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; padding: 0 4px; margin-left: 4px;">✕</button>
+                                <label for="sub_${customGroupId}_${subIdx}">${sub.text}</label>
                             </li>`;
                     });
                 }
@@ -616,19 +711,13 @@
                     });
 
                     const mainTaskLi = groupDiv.querySelector(".custom-main-task");
-                    const delTaskBtn = mainTaskLi.querySelector(".delete-custom-task-btn");
-                    delTaskBtn.addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        if (confirm("Opravdu chceš smazat tento úkol?")) {
-                            customItems[index].task = "";
-                            localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
-                            renderCalendar();
-                        }
-                    });
-
                     attachTaskItemFeatures(mainTaskLi, (newText) => {
                         customItems[index].task = newText;
                         localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
+                    }, () => {
+                        customItems[index].task = "";
+                        localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
+                        renderCalendar();
                     });
                 }
 
@@ -638,20 +727,14 @@
                 });
 
                 groupDiv.querySelectorAll(".task-list .task-item[data-sub-id]").forEach((li, subIdx) => {
-                    const delSubBtn = li.querySelector(".delete-sub-btn");
-                    delSubBtn.addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        if (confirm("Opravdu chceš smazat tento úkol?")) {
-                            addedSubtasks[customGroupId].splice(subIdx, 1);
-                            if (addedSubtasks[customGroupId].length === 0) delete addedSubtasks[customGroupId];
-                            localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
-                            renderCalendar();
-                        }
-                    });
-
                     attachTaskItemFeatures(li, (newText) => {
                         addedSubtasks[customGroupId][subIdx].text = newText;
                         localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
+                    }, () => {
+                        addedSubtasks[customGroupId].splice(subIdx, 1);
+                        if (addedSubtasks[customGroupId].length === 0) delete addedSubtasks[customGroupId];
+                        localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
+                        renderCalendar();
                     });
 
                     const cb = li.querySelector("input[type='checkbox']");
@@ -681,7 +764,7 @@
                         headerSpan.style.borderBottom = "1px dashed var(--accent-blue)";
                         headerSpan.focus();
                         editGroupBtn.textContent = "Uložit";
-                        delGroupBtn.style.display = "inline";
+                        delGroupBtn.style.display = "inline-block";
                     }
                 });
 
@@ -733,62 +816,62 @@
 </script>
 
 <!-- Modal pro přidání nové události / úkolu -->
-<div id="addModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background: var(--card-bg); padding: 24px; border-radius: 12px; width: 90%; max-width: 450px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        <h2 style="margin-top: 0; font-size: 1.3rem; color: var(--text-color);">Přidat novou položku</h2>
+<div id="addModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; padding: 12px; box-sizing: border-box;">
+    <div style="background: var(--card-bg); padding: 20px; border-radius: 12px; width: 100%; max-width: 450px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
+        <h2 style="margin-top: 0; font-size: 1.2rem; color: var(--text-color);">Přidat novou položku</h2>
         
-        <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Typ:</label>
-            <select id="modalType" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color);">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Typ:</label>
+            <select id="modalType" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); font-size: 1rem;">
                 <option value="event">Událost (bez okénka)</option>
                 <option value="task">Úkol (s okénkem k odškrtnutí)</option>
             </select>
         </div>
 
-        <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Rok:</label>
-            <select id="modalYear" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color);">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Rok:</label>
+            <select id="modalYear" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); font-size: 1rem;">
                 <option value="2026">2026</option>
                 <option value="2027">2027</option>
                 <option value="2028">2028</option>
             </select>
         </div>
 
-        <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Název události:</label>
-            <input type="text" id="modalEventTitle" placeholder="např. 15. 1. — Hra" style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box;">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Název události (včetně měsíce v textu, např. 15. 3. nebo Březen):</label>
+            <input type="text" id="modalEventTitle" placeholder="např. 15. 3. — Hra" style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
         </div>
 
-        <div id="taskFieldContainer" style="margin-bottom: 15px; display: none;">
-            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Název úkolu (odškrtávací položka):</label>
-            <input type="text" id="modalTaskText" placeholder="např. Přečíst knihu..." style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box;">
+        <div id="taskFieldContainer" style="margin-bottom: 12px; display: none;">
+            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Název úkolu (odškrtávací položka):</label>
+            <input type="text" id="modalTaskText" placeholder="např. Přečíst knihu..." style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
         </div>
 
-        <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="modalHighlight" style="width: 18px; height: 18px; accent-color: var(--accent-blue); cursor: pointer;">
+        <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="modalHighlight" style="width: 20px; height: 20px; accent-color: var(--accent-blue); cursor: pointer;">
             <label for="modalHighlight" style="font-size: 0.9rem; color: var(--text-color); cursor: pointer; user-select: none;">Zvýrazněná událost (barevné pozadí / záře)</label>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button id="modalCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer;">Zrušit</button>
-            <button id="modalSave" style="background: var(--accent-blue); color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">Uložit</button>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+            <button id="modalCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
+            <button id="modalSave" style="background: var(--accent-blue); color: #0f172a; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Uložit</button>
         </div>
     </div>
 </div>
 
 <!-- Modal pro přidání nového podúkolu k události -->
-<div id="subtaskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background: var(--card-bg); padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        <h2 style="margin-top: 0; font-size: 1.3rem; color: var(--text-color);">Přidat nový úkol</h2>
+<div id="subtaskModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 1000; padding: 12px; box-sizing: border-box;">
+    <div style="background: var(--card-bg); padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box;">
+        <h2 style="margin-top: 0; font-size: 1.2rem; color: var(--text-color);">Přidat nový úkol</h2>
         
-        <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Zadej název nového úkolu:</label>
-            <input type="text" id="subtaskTextInput" placeholder="např. Koupit lístky..." style="width: 100%; padding: 8px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box;">
+        <div style="margin-bottom: 12px;">
+            <label style="display: block; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-muted);">Zadej název nového úkolu:</label>
+            <input type="text" id="subtaskTextInput" placeholder="např. Koupit lístky..." style="width: 100%; padding: 10px; border-radius: 6px; background: rgba(15, 23, 42, 0.8); color: var(--text-color); border: 1px solid var(--border-color); box-sizing: border-box; font-size: 1rem;">
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button id="subtaskCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 6px; cursor: pointer;">Zrušit</button>
-            <button id="subtaskSave" style="background: var(--accent-green); color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">Přidat</button>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+            <button id="subtaskCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
+            <button id="subtaskSave" style="background: var(--accent-green); color: #0f172a; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Přidat</button>
         </div>
     </div>
 </div>
