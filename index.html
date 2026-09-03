@@ -541,8 +541,6 @@
 
         let customItems = JSON.parse(localStorage.getItem("custom_calendar_items") || "[]");
         let addedSubtasks = JSON.parse(localStorage.getItem("added_subtasks") || "{}");
-        let hiddenGroups = JSON.parse(localStorage.getItem("hidden_groups") || "[]");
-        let hiddenTasks = JSON.parse(localStorage.getItem("hidden_tasks") || "[]");
 
         function openSubtaskModal(groupId) {
             activeGroupIdForSubtask = groupId;
@@ -638,27 +636,6 @@
             return { day: 1, month: 12 };
         }
 
-        const defaultEvents = [
-            { year: "2026", date: "1.–28. 9.", title: "", tasks: ["Přečíst Zaklínač a jeho svět", "Dohrát The Callisto Protocol – DLC"], highlighted: false, groupIndex: 0 },
-            { year: "2026", date: "29. 9.", title: "The Witcher 3 Remastered ✨", tasks: ["Připomenout si základní příběh Zaklínače 1 a 2"], highlighted: true, groupIndex: 1 },
-            { year: "2026", date: "1. 11.–18. 11.", title: "", tasks: ["Zahrát si GTA: Vice City", "Zahrát si The Witcher 3 Remastered"], highlighted: false, groupIndex: 2 },
-            { year: "2026", date: "1. 11.–30. 11.", title: "", tasks: ["Přečíst Spasitel Duny"], highlighted: false, groupIndex: 3 },
-            { year: "2026", date: "19. 11.", title: "GTA 6 ✨", tasks: [], highlighted: true, groupIndex: 4 },
-            { year: "2026", date: "1. 12.–24. 12.", title: "", tasks: ["Přečíst Harry Potter a Kámen mudrců", "Zahrát si Hogwarts Legacy"], highlighted: false, groupIndex: 5 },
-            { year: "2026", date: "17. 12.", title: "Duna 3 ✨", tasks: ["Připomenout si film Duna", "Připomenout si Dunu: Část druhá"], highlighted: true, groupIndex: 6 },
-            { year: "2026", date: "25. 12.", title: "Harry Potter – 1. série ✨", tasks: [], highlighted: true, groupIndex: 7 },
-            
-            { year: "2027", date: "Leden 2027", title: "", tasks: ["Kingdom Come: Deliverance II – DLC"], highlighted: false, groupIndex: 8 },
-            { year: "2027", date: "Únor 2027", title: "Metro 2039 ✨", tasks: ["Připomenout si příběh Metro 2033", "Připomenout si Metro: Last Light", "Připomenout si Metro Exodus", "Zahrát si nejlepší části Metro znovu"], highlighted: true, groupIndex: 9 },
-            { year: "2027", date: "Březen–duben 2027", title: "", tasks: ["Přečíst Zaklínač: Vzestup krále všech RPG"], highlighted: false, groupIndex: 10 },
-            { year: "2027", date: "Květen–červen 2027", title: "", tasks: ["Wolfenstein II"], highlighted: false, groupIndex: 11 },
-            { year: "2027", date: "2027", title: "The Witcher 3: Songs of the Past ✨", tasks: ["Připomenout si příběh The Witcher 3", "Připomenout si Hearts of Stone", "Připomenout si Blood and Wine"], highlighted: true, groupIndex: 12 },
-            { year: "2027", date: "2027", title: "Fallout – 3. série ✨", tasks: ["Připomenout si Fallout – 1. sérii", "Připomenout si Fallout – 2. sérii"], highlighted: true, groupIndex: 13 },
-            { year: "2027", date: "2027", title: "The Last of Us – 3. série ✨", tasks: ["Nic"], highlighted: true, groupIndex: 14 },
-
-            { year: "2028", date: "2028", title: "The Witcher 4 ✨", tasks: ["Připomenout si příběh The Witcher 1", "Připomenout si příběh The Witcher 2", "Připomenout si příběh The Witcher 3", "Dohrát The Witcher 3: Songs of the Past"], highlighted: true, groupIndex: 15 }
-        ];
-
         function attachTaskItemFeatures(taskItem, updateCallback, onDeleteCallback) {
             const label = taskItem.querySelector("label");
             const checkbox = taskItem.querySelector("input[type='checkbox']");
@@ -718,7 +695,6 @@
             container.appendChild(headerEl);
 
             const allYearsSet = new Set(["2026", "2027", "2028"]);
-            defaultEvents.forEach(ev => allYearsSet.add(ev.year));
             customItems.forEach(item => { if (item.year) allYearsSet.add(item.year); });
 
             const sortedYears = Array.from(allYearsSet).sort((a, b) => parseInt(a) - parseInt(b));
@@ -747,19 +723,7 @@
                 }
             }
 
-            defaultEvents.forEach((ev) => {
-                if (!hiddenGroups.includes(ev.groupIndex)) {
-                    const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
-                    registerMonth(ev.year, dateText);
-                }
-            });
             customItems.forEach((item) => { registerMonth(item.year, item.date); });
-
-            Object.keys(activeMonthsByYear).forEach(y => {
-                if (activeMonthsByYear[y].size === 0) {
-                    activeMonthsByYear[y].add(12);
-                }
-            });
 
             yearSections.forEach(yearSec => {
                 const yearStr = yearSec.getAttribute("data-year");
@@ -787,152 +751,22 @@
                 monthItemsMap[key].push({ element: groupDiv, day: dayNum });
             }
 
-            defaultEvents.forEach((ev) => {
-                if (hiddenGroups.includes(ev.groupIndex)) return;
-                const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === ev.year);
-                if (!yearSec) return;
-
-                const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
-                const titleText = localStorage.getItem("event_title_" + ev.groupIndex) !== null ? localStorage.getItem("event_title_" + ev.groupIndex) : ev.title;
-                
-                const dateInfo = extractDateInfo(dateText);
-                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
-                if (!targetMonthSec) return;
-
-                const groupDiv = document.createElement("div");
-                groupDiv.className = "item-group" + (ev.highlighted ? " highlighted-event" : "");
-                const groupId = "default_" + ev.groupIndex;
-                groupDiv.setAttribute("data-group-id", groupId);
-
-                let innerHtml = `
-                    <div class="event-header">
-                        <span class="event-date-badge editable-date" style="cursor: pointer;" title="Kliknutím upravíš datum">${dateText}</span>
-                        <span class="editable-text" style="flex-grow: 1;">${titleText}</span>
-                        <div class="event-header-actions">
-                            <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink);">+ Úkol</button>
-                            <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue);">Upravit</button>
-                            <button class="delete-group-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444;">✕ Smazat</button>
-                        </div>
-                    </div>
-                    <ul class="task-list">`;
-
-                ev.tasks.forEach((taskText, tIndex) => {
-                    const globalTaskIndex = ev.groupIndex * 100 + tIndex;
-                    if (hiddenTasks.includes(globalTaskIndex)) return;
-                    const finalTaskText = localStorage.getItem("task_text_" + globalTaskIndex) || taskText;
-                    const isChecked = localStorage.getItem("task_state_" + globalTaskIndex) === "true";
-                    const uniqueId = `t_${ev.groupIndex}_${tIndex}`;
-
-                    innerHtml += `
-                        <li class="task-item" data-task-idx="${globalTaskIndex}">
-                            <input type="checkbox" id="${uniqueId}" ${isChecked ? 'checked' : ''}>
-                            <label for="${uniqueId}">${finalTaskText}</label>
-                        </li>`;
-                });
-
-                if (addedSubtasks[groupId]) {
-                    addedSubtasks[groupId].forEach((sub, subIdx) => {
-                        const subUniqueId = `default_sub_${groupId}_${subIdx}`;
-                        innerHtml += `
-                            <li class="task-item default-subtask-injected" data-sub-key="${groupId}_${subIdx}">
-                                <input type="checkbox" id="${subUniqueId}" ${sub.checked ? 'checked' : ''}>
-                                <label for="${subUniqueId}">${sub.text}</label>
-                            </li>`;
-                    });
-                }
-
-                innerHtml += `</ul>`;
-                groupDiv.innerHTML = innerHtml;
-
-                const dateBadge = groupDiv.querySelector(".editable-date");
-                const textSpan = groupDiv.querySelector(".editable-text");
-                const editGroupBtn = groupDiv.querySelector(".edit-group-btn");
-                const delGroupBtn = groupDiv.querySelector(".delete-group-btn");
-
-                editGroupBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    const isEditable = textSpan.getAttribute("contenteditable") === "true";
-                    if (isEditable) {
-                        textSpan.setAttribute("contenteditable", "false");
-                        dateBadge.setAttribute("contenteditable", "false");
-                        textSpan.style.borderBottom = "none";
-                        dateBadge.style.borderBottom = "none";
-                        editGroupBtn.textContent = "Upravit";
-                        delGroupBtn.style.display = "none";
-                        localStorage.setItem("event_title_" + ev.groupIndex, textSpan.textContent);
-                        localStorage.setItem("event_date_" + ev.groupIndex, dateBadge.textContent);
-                        renderCalendar();
-                    } else {
-                        textSpan.setAttribute("contenteditable", "true");
-                        dateBadge.setAttribute("contenteditable", "true");
-                        textSpan.style.borderBottom = "1px dashed var(--accent-blue)";
-                        dateBadge.style.borderBottom = "1px dashed var(--accent-blue)";
-                        textSpan.focus();
-                        editGroupBtn.textContent = "Uložit";
-                        delGroupBtn.style.display = "inline-block";
-                    }
-                });
-
-                delGroupBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    if (confirm("Opravdu chceš smazat celou tuto událost?")) {
-                        hiddenGroups.push(ev.groupIndex);
-                        localStorage.setItem("hidden_groups", JSON.stringify(hiddenGroups));
-                        renderCalendar();
-                    }
-                });
-
-                groupDiv.querySelector(".add-subtask-btn").addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    openSubtaskModal(groupId);
-                });
-
-                groupDiv.querySelectorAll(".task-item[data-task-idx]").forEach(li => {
-                    const taskIdx = parseInt(li.getAttribute("data-task-idx"), 10);
-                    const cb = li.querySelector("input[type='checkbox']");
-                    cb.addEventListener("change", () => { localStorage.setItem("task_state_" + taskIdx, cb.checked); });
-
-                    attachTaskItemFeatures(li, (newText) => {
-                        localStorage.setItem("task_text_" + taskIdx, newText);
-                    }, () => {
-                        hiddenTasks.push(taskIdx);
-                        localStorage.setItem("hidden_tasks", JSON.stringify(hiddenTasks));
-                        renderCalendar();
-                    });
-                });
-
-                groupDiv.querySelectorAll(".default-subtask-injected").forEach(li => {
-                    const subKey = li.getAttribute("data-sub-key");
-                    const [gId, sIdx] = subKey.split("_").slice(-2);
-                    const subIdxNum = parseInt(sIdx, 10);
-                    const cb = li.querySelector("input[type='checkbox']");
-
-                    cb.addEventListener("change", () => {
-                        addedSubtasks[groupId][subIdxNum].checked = cb.checked;
-                        localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
-                    });
-
-                    attachTaskItemFeatures(li, (newText) => {
-                        addedSubtasks[groupId][subIdxNum].text = newText;
-                        localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
-                    }, () => {
-                        addedSubtasks[groupId].splice(subIdxNum, 1);
-                        if (addedSubtasks[groupId].length === 0) delete addedSubtasks[groupId];
-                        localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
-                        renderCalendar();
-                    });
-                });
-
-                addGroupToMap(ev.year, dateInfo.month, dateInfo.day, groupDiv);
-            });
-
             customItems.forEach((item, index) => {
                 const yearSec = Array.from(document.querySelectorAll(".year-section")).find(sec => sec.getAttribute("data-year") === item.year);
                 if (!yearSec) return;
 
                 const dateInfo = extractDateInfo(item.date);
-                const targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
-                if (!targetMonthSec) return;
+                let targetMonthSec = yearSec.querySelector(`.months-container .month-section[data-month-num="${dateInfo.month}"]`);
+                if (!targetMonthSec) {
+                    const monthObj = monthNames.find(mn => mn.num === dateInfo.month);
+                    const monthSec = document.createElement("div");
+                    monthSec.className = "month-section";
+                    monthSec.setAttribute("data-month-num", dateInfo.month);
+                    monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name}</div>`;
+                    yearSec.querySelector(".months-container").appendChild(monthSec);
+                    yearSec.style.display = "block";
+                    targetMonthSec = monthSec;
+                }
 
                 const groupDiv = document.createElement("div");
                 groupDiv.className = "item-group custom-injected" + (item.highlighted ? " highlighted-event" : "");
@@ -1131,12 +965,6 @@
                     }
                 }
             }
-
-            defaultEvents.forEach((ev) => {
-                if (hiddenGroups.includes(ev.groupIndex)) return;
-                const dateText = localStorage.getItem("event_date_" + ev.groupIndex) || ev.date;
-                markBusyDays(ev.year, dateText);
-            });
 
             customItems.forEach((item) => {
                 markBusyDays(item.year, item.date);
@@ -1464,11 +1292,11 @@
         </div>
         <div style="margin-bottom: 12px;">
             <label>Název události / hry (volitelně):</label>
-            <input type="text" id="modalEventTitle" placeholder="např. The Witcher 3 ✨">
+            <input type="text" id="modalEventTitle" placeholder="např. Výlet do lesa ✨">
         </div>
         <div id="taskFieldContainer" style="margin-bottom: 12px; display: none;">
             <label>Název úkolu (odškrtávací položka):</label>
-            <input type="text" id="modalTaskText" placeholder="např. Přečíst knihu...">
+            <input type="text" id="modalTaskText" placeholder="např. Koupit lístky...">
         </div>
         <div style="margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
             <input type="checkbox" id="modalHighlight" style="width: 20px; height: 20px; accent-color: var(--accent-pink); cursor: pointer;">
