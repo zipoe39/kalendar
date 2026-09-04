@@ -11,6 +11,7 @@
     <meta name="theme-color" content="#0C0F18">
     <title>Můj kalendář těšení a úkolů</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
     <style>
         :root {
             --bg-color: #0C0F18;
@@ -230,6 +231,12 @@
             display: flex;
         }
 
+        .emoji-icon {
+            height: 1.15em;
+            width: 1.15em;
+            vertical-align: -0.2em;
+        }
+
         .settings-toggle-btn {
             position: fixed;
             top: max(14px, calc(env(safe-area-inset-top) + 10px));
@@ -257,6 +264,47 @@
             color: #0C0F18;
             font-size: 1.3rem;
             font-weight: 700;
+        }
+
+        .favorites-toggle-btn {
+            right: auto;
+            left: max(14px, calc(env(safe-area-inset-left) + 14px));
+        }
+
+        .favorites-toggle-btn.active {
+            font-size: 1.2rem;
+        }
+
+        /* Pohled "jen na co se těším" - skryje vše kromě žlutě zvýrazněných
+           položek a schová i prázdné měsíce/roky, které by pak nic neobsahovaly. */
+        body.favorites-only-view .item-group:not(.highlighted-event) {
+            display: none;
+        }
+
+        body.favorites-only-view .month-section:not(:has(.item-group.highlighted-event)) {
+            display: none;
+        }
+
+        body.favorites-only-view .year-section:not(:has(.item-group.highlighted-event)) {
+            display: none;
+        }
+
+        /* V tomto pohledu jde jen o přehled věcí na které se těším,
+           bez úkolů/podúkolů a bez odškrtávání */
+        body.favorites-only-view .item-group .task-list,
+        body.favorites-only-view .item-group .custom-main-task {
+            display: none;
+        }
+
+        body.favorites-only-view .item-group input[type="checkbox"] {
+            display: none;
+        }
+
+        body.favorites-only-view .task-item {
+            background: none;
+            border: none;
+            padding: 4px 0;
+            gap: 0;
         }
 
         .event-sub-actions {
@@ -318,6 +366,10 @@
             font-size: 0.8rem;
             cursor: pointer;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
 
         .modal-overlay {
@@ -660,18 +712,59 @@
 </div>
 
 <button id="editModeToggle" class="settings-toggle-btn" title="Zobrazit úpravy" aria-label="Přepnout režim úprav">⚙️</button>
+<button id="favoritesViewToggle" class="settings-toggle-btn favorites-toggle-btn" title="Zobrazit jen to, na co se těším" aria-label="Přepnout na pohled jen na oblíbené">☆</button>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // Sada vlastních SVG ikon - vykreslí se stejně na PC i na mobilu
+        // (na rozdíl od emoji, které si každý systém kreslí po svém).
+        // Emoji ikonky - vzhled zůstává stejný jako předtím (na počítači),
+        // jen se navíc přes Twemoji vykreslí jako obrázek, takže vypadají
+        // úplně stejně na jakémkoliv telefonu i počítači.
+        const ICONS = {
+            gear: '⚙️',
+            check: '✓',
+            starOutline: '☆',
+            starFilled: '★',
+            calendar: '📅',
+            folder: '📁',
+            chevronDown: '▼',
+            chevronUp: '▲',
+            close: '✕'
+        };
+
+        function unifyIcons(el) {
+            if (window.twemoji && el) {
+                window.twemoji.parse(el, {
+                    base: "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/",
+                    folder: "svg",
+                    ext: ".svg",
+                    className: "emoji-icon"
+                });
+            }
+        }
+
         const addEventBtn = document.getElementById("addEventBtn");
         const analyticsBtn = document.getElementById("analyticsBtn");
         const editModeToggle = document.getElementById("editModeToggle");
+        const favoritesViewToggle = document.getElementById("favoritesViewToggle");
+        unifyIcons(editModeToggle);
+        unifyIcons(favoritesViewToggle);
 
         editModeToggle.addEventListener("click", () => {
             const isActive = document.body.classList.toggle("edit-mode");
-            editModeToggle.textContent = isActive ? "✓" : "⚙️";
+            editModeToggle.innerHTML = isActive ? ICONS.check : ICONS.gear;
+            unifyIcons(editModeToggle);
             editModeToggle.classList.toggle("active", isActive);
             editModeToggle.title = isActive ? "Potvrdit a skrýt úpravy" : "Zobrazit úpravy";
+        });
+
+        favoritesViewToggle.addEventListener("click", () => {
+            const isActive = document.body.classList.toggle("favorites-only-view");
+            favoritesViewToggle.innerHTML = isActive ? ICONS.starFilled : ICONS.starOutline;
+            unifyIcons(favoritesViewToggle);
+            favoritesViewToggle.classList.toggle("active", isActive);
+            favoritesViewToggle.title = isActive ? "Zobrazit celou nástěnku" : "Zobrazit jen to, na co se těším";
         });
         
         const addModal = document.getElementById("addModal");
@@ -721,6 +814,7 @@
                 renderCalendar();
             }
         });
+
 
         let customItems = JSON.parse(localStorage.getItem("custom_calendar_items") || "[]");
         let addedSubtasks = JSON.parse(localStorage.getItem("added_subtasks") || "{}");
@@ -907,7 +1001,8 @@
                 btn.style.cssText = "background: rgba(95, 127, 180, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;";
 
                 const delBtn = document.createElement("button");
-                delBtn.textContent = "✕";
+                delBtn.innerHTML = ICONS.close;
+                unifyIcons(delBtn);
                 delBtn.className = "delete-task-btn";
                 delBtn.style.cssText = "display: none; background: rgba(169, 75, 92, 0.15); border: 1px solid #A94B5C; color: #A94B5C; white-space: nowrap;";
 
@@ -993,7 +1088,7 @@
                         const monthSec = document.createElement("div");
                         monthSec.className = "month-section";
                         monthSec.setAttribute("data-month-num", m);
-                        monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name}</div>`;
+                        monthSec.innerHTML = `<div class="month-title"><span style="display:inline-flex;">${ICONS.calendar}</span> ${monthObj.name}</div>`;
                         monthsContainer.appendChild(monthSec);
                     }
                 }
@@ -1019,7 +1114,7 @@
                     const monthSec = document.createElement("div");
                     monthSec.className = "month-section";
                     monthSec.setAttribute("data-month-num", dateInfo.month);
-                    monthSec.innerHTML = `<div class="month-title">📆 ${monthObj.name}</div>`;
+                    monthSec.innerHTML = `<div class="month-title"><span style="display:inline-flex;">${ICONS.calendar}</span> ${monthObj.name}</div>`;
                     yearSec.querySelector(".months-container").appendChild(monthSec);
                     yearSec.style.display = "block";
                     targetMonthSec = monthSec;
@@ -1036,11 +1131,11 @@
                         <span class="editable-text">${item.title}</span>
                     </div>
                     <div class="event-sub-row">
-                        <button class="move-up-btn move-btn" title="Posunout nahoru" style="background: rgba(199, 204, 218, 0.1); border: 1px solid var(--border-color); color: var(--text-color);">▲</button>
-                        <button class="move-down-btn move-btn" title="Posunout dolů" style="background: rgba(199, 204, 218, 0.1); border: 1px solid var(--border-color); color: var(--text-color);">▼</button>
+                        <button class="move-up-btn move-btn" title="Posunout nahoru" style="background: rgba(199, 204, 218, 0.1); border: 1px solid var(--border-color); color: var(--text-color);">${ICONS.chevronUp}</button>
+                        <button class="move-down-btn move-btn" title="Posunout dolů" style="background: rgba(199, 204, 218, 0.1); border: 1px solid var(--border-color); color: var(--text-color);">${ICONS.chevronDown}</button>
                         <button class="add-subtask-btn" style="background: rgba(201, 162, 39, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink); white-space: nowrap;">+ Úkol</button>
                         <button class="edit-group-btn" style="background: rgba(95, 127, 180, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;">Upravit</button>
-                        <button class="delete-custom-btn" style="display: none; background: rgba(169, 75, 92, 0.15); border: 1px solid #A94B5C; color: #A94B5C; white-space: nowrap;">✕ Smazat</button>
+                        <button class="delete-custom-btn" style="display: none; background: rgba(169, 75, 92, 0.15); border: 1px solid #A94B5C; color: #A94B5C; white-space: nowrap; align-items: center; gap: 4px;">${ICONS.close} Smazat</button>
                     </div>
                     <ul class="task-list">`;
 
@@ -1191,6 +1286,8 @@
                     });
                 });
             });
+
+            unifyIcons(container);
         }
 
         renderCalendar();
@@ -1325,8 +1422,8 @@
                     <div style="background: #161B28; border: 1px solid #2B3346; border-radius: 8px; overflow: hidden;">
                         <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #A94B5C; font-size: 0.95rem; user-select: none; outline: none;">
                             <span style="width: 14px; flex-shrink: 0;"></span>
-                            <span style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; color: #EDEEF3; text-align: center;">📁 Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
-                            <span class="accordion-arrow" style="color: #8D96AC; font-size: 0.8rem; flex-shrink: 0; width: 14px; text-align: right;">▼</span>
+                            <span style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; color: #EDEEF3; text-align: center;"><span style="display:inline-flex;">${ICONS.folder}</span> Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
+                            <span class="accordion-arrow" style="color: #8D96AC; flex-shrink: 0; width: 14px; display: flex; justify-content: flex-end;">${ICONS.chevronDown}</span>
                         </div>
                         <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid #1E2536;">
                             ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px; color: #C7CCDA;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
@@ -1337,6 +1434,7 @@
             html += `</div>`;
 
             analyticsContent.innerHTML = html;
+            unifyIcons(analyticsContent);
 
             analyticsContent.querySelectorAll(".accordion-header").forEach(header => {
                 header.addEventListener("click", () => {
@@ -1345,11 +1443,12 @@
                     const arrow = header.querySelector(".accordion-arrow");
                     if (content.style.display === "none") {
                         content.style.display = "block";
-                        if (arrow) arrow.textContent = "▲";
+                        if (arrow) arrow.innerHTML = ICONS.chevronUp;
                     } else {
                         content.style.display = "none";
-                        if (arrow) arrow.textContent = "▼";
+                        if (arrow) arrow.innerHTML = ICONS.chevronDown;
                     }
+                    unifyIcons(header);
                 });
             });
 
@@ -1379,24 +1478,25 @@
 
         function updateTriggerText() {
             if (dpState.mode === 'single') {
-                dpTrigger.textContent = `${dpState.singleDate.day}. ${dpState.singleDate.month}. ${dpState.singleDate.year}`;
+                dpTrigger.innerHTML = `${dpState.singleDate.day}. ${dpState.singleDate.month}. ${dpState.singleDate.year} <span style="display:inline-flex;">${ICONS.calendar}</span>`;
                 modalEventDateInput.value = `${dpState.singleDate.day}. ${dpState.singleDate.month}.`;
                 modalEventDateInput.setAttribute("data-selected-year", dpState.singleDate.year);
             } else {
                 if (dpState.rangeStart && dpState.rangeEnd) {
-                    dpTrigger.textContent = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — ${dpState.rangeEnd.day}. ${dpState.rangeEnd.month}. ${dpState.rangeEnd.year}`;
+                    dpTrigger.innerHTML = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — ${dpState.rangeEnd.day}. ${dpState.rangeEnd.month}. ${dpState.rangeEnd.year} <span style="display:inline-flex;">${ICONS.calendar}</span>`;
                     modalEventDateInput.value = `${dpState.rangeStart.day}.–${dpState.rangeEnd.day}. ${dpState.rangeEnd.month}.`;
                     modalEventDateInput.setAttribute("data-selected-year", dpState.rangeEnd.year);
                 } else if (dpState.rangeStart) {
-                    dpTrigger.textContent = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — vyberte konec`;
+                    dpTrigger.innerHTML = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}. — vyberte konec <span style="display:inline-flex;">${ICONS.calendar}</span>`;
                     modalEventDateInput.value = `${dpState.rangeStart.day}. ${dpState.rangeStart.month}.`;
                     modalEventDateInput.setAttribute("data-selected-year", dpState.rangeStart.year);
                 } else {
-                    dpTrigger.textContent = "Vyberte rozmezí od–do";
+                    dpTrigger.innerHTML = `Vyberte rozmezí od–do <span style="display:inline-flex;">${ICONS.calendar}</span>`;
                     modalEventDateInput.value = "";
                     modalEventDateInput.setAttribute("data-selected-year", dpState.year);
                 }
             }
+            unifyIcons(dpTrigger);
         }
 
         function renderDatePickerGrid() {
@@ -1585,7 +1685,7 @@
         <div style="margin-bottom: 12px;">
             <label>Datum / rozmezí:</label>
             <div class="date-picker-wrapper" id="datePickerWrapper">
-                <button type="button" class="date-input-trigger" id="dpTrigger">17. 9. 2026 <span>📅</span></button>
+                <button type="button" class="date-input-trigger" id="dpTrigger">17. 9. 2026</button>
                 <div class="date-picker-dropdown" id="dpDropdown">
                     <div class="dp-header">
                         <button type="button" class="dp-nav-btn" id="dpPrevBtn">&lt;</button>
