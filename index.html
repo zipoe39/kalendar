@@ -8,23 +8,29 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Kalendář">
+    <meta name="theme-color" content="#0C0F18">
     <title>Můj kalendář těšení a úkolů</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
-            --year-bg: #000000;       
-            --month-bg: #222228;      
-            --card-bg: #121214;       
-            --input-bg: #111111;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-pink: #facc15;
-            --accent-green: #facc15;
-            --accent-yellow: #facc15;
-            --accent-blue: #38bdf8;
-            --border-color: #52525b;  
-            --highlight-bg: #1e1b10;  
-            --highlight-border: #facc15;
+            --bg-color: #0C0F18;
+            --year-bg: #0C0F18;       
+            --month-bg: #1B2130;      
+            --card-bg: #1E2536;       
+            --input-bg: #161B28;
+            --text-color: #EDEEF3;
+            --text-muted: #8D96AC;
+            --accent-pink: #C9A227;
+            --accent-green: #C9A227;
+            --accent-yellow: #C9A227;
+            --accent-blue: #5F7FB4;
+            --border-color: #2B3346;  
+            --highlight-bg: #2A2410;  
+            --highlight-border: #C9A227;
+            --ink-wine: #A94B5C;
+            --ink-blue: #5F7FB4;
+            --serif: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         * {
@@ -37,7 +43,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: var(--sans);
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -62,28 +68,39 @@
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-family: var(--serif);
+            font-weight: 600;
+            font-size: 2rem;
+            letter-spacing: 0.3px;
+            color: var(--text-color);
             margin-bottom: 10px;
-            background: linear-gradient(to right, #facc15, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 46px;
+            height: 2px;
+            background: var(--highlight-border);
+            margin: 10px auto 0;
         }
 
         .header-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
-            margin-top: 12px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
 
         .year-section {
             background-color: var(--year-bg);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 40px; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            padding: 16px 4px;
+            margin-bottom: 40px;
+            border-top: 1px solid var(--border-color);
         }
 
         .year-section:last-child {
@@ -91,28 +108,25 @@
         }
 
         .year-title {
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-family: var(--serif);
+            font-size: 2.1rem;
+            font-weight: 500;
             margin-bottom: 16px;
             display: flex;
-            align-items: center;
+            align-items: baseline;
             gap: 10px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            letter-spacing: 0.5px;
-            color: #ffffff; 
-            background: linear-gradient(to right, #ffffff, #facc15);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid var(--highlight-border);
+            padding-bottom: 12px;
+            color: var(--text-color);
         }
 
         .month-section {
             background: var(--month-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
+            border-left: 2px solid var(--ink-blue);
+            border-radius: 4px;
+            padding: 14px 14px 14px 16px;
             margin-bottom: 16px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .month-section:last-child {
@@ -120,28 +134,29 @@
         }
 
         .month-title {
-            font-size: 1rem;
-            font-weight: 700;
+            font-family: var(--sans);
+            font-size: 1.05rem;
+            font-weight: 600;
             margin-bottom: 12px;
             color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .item-group {
             margin-bottom: 12px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
+            border-left: 3px solid var(--ink-blue);
+            border-radius: 4px;
+            padding: 12px 12px 12px 14px;
         }
 
         .item-group.highlighted-event {
             background: var(--highlight-bg);
-            border: 2px solid var(--highlight-border);
+            border: 1px solid var(--highlight-border);
+            border-left: 3px solid var(--highlight-border);
         }
 
         .item-group:last-child {
@@ -157,7 +172,7 @@
         }
 
         .event-date-badge {
-            background: rgba(56, 189, 248, 0.15);
+            background: rgba(95, 127, 180, 0.15);
             border: 1px solid var(--accent-blue);
             color: var(--accent-blue);
             padding: 3px 8px;
@@ -170,7 +185,7 @@
         .editable-text {
             font-weight: 600;
             font-size: 1rem;
-            color: #e2e8f0;
+            color: #EDEEF3;
             flex-grow: 1;
             min-width: 0;
             word-break: break-word;
@@ -209,12 +224,12 @@
             background: rgba(0, 0, 0, 0.3);
             padding: 8px 10px;
             border-radius: 8px;
-            border: 1px solid #3f3f46;
+            border: 1px solid #2B3346;
             transition: all 0.2s ease;
         }
 
         .task-item:hover {
-            border-color: #52525b;
+            border-color: #2B3346;
             background: rgba(255, 255, 255, 0.05);
         }
 
@@ -265,12 +280,12 @@
         }
 
         .modal-box {
-            background: #1c1c1e;
+            background: #161B28;
             padding: 24px;
             border-radius: 16px;
             width: 100%;
             max-width: 450px;
-            border: 1px solid #3a3a3c;
+            border: 1px solid #2B3346;
             box-shadow: 0 20px 40px rgba(0,0,0,0.9);
             box-sizing: border-box;
             margin: auto;
@@ -280,14 +295,14 @@
             margin-top: 0;
             margin-bottom: 16px;
             font-size: 1.3rem;
-            color: #ffffff;
+            color: #EDEEF3;
         }
 
         .modal-box label {
             display: block;
             margin-bottom: 6px;
             font-size: 0.85rem;
-            color: #d1d5db;
+            color: #C7CCDA;
             font-weight: 500;
         }
 
@@ -296,9 +311,9 @@
             width: 100%;
             padding: 12px;
             border-radius: 8px;
-            background: #2c2c2e;
-            color: #ffffff;
-            border: 1px solid #48484a;
+            background: #1E2536;
+            color: #EDEEF3;
+            border: 1px solid #2B3346;
             box-sizing: border-box;
             font-size: 1rem;
             outline: none;
@@ -311,7 +326,7 @@
         }
 
         .modal-box input::placeholder {
-            color: #8e8e93;
+            color: #7A8296;
         }
 
         .date-picker-wrapper {
@@ -323,9 +338,9 @@
             width: 100%;
             padding: 12px;
             border-radius: 8px;
-            background: #2c2c2e;
-            color: #ffffff;
-            border: 1px solid #48484a;
+            background: #1E2536;
+            color: #EDEEF3;
+            border: 1px solid #2B3346;
             box-sizing: border-box;
             font-size: 1rem;
             cursor: pointer;
@@ -346,14 +361,14 @@
             left: 0;
             width: 100%;
             max-width: 340px;
-            background: #1c1c1e;
-            border: 1px solid #3a3a3c;
+            background: #161B28;
+            border: 1px solid #2B3346;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             z-index: 1100;
             padding: 16px;
             box-sizing: border-box;
-            color: #ffffff;
+            color: #EDEEF3;
         }
 
         .dp-header {
@@ -368,7 +383,7 @@
         .dp-nav-btn {
             background: none;
             border: none;
-            color: #d1d5db;
+            color: #C7CCDA;
             font-size: 1.1rem;
             cursor: pointer;
             padding: 4px 8px;
@@ -376,15 +391,15 @@
         }
 
         .dp-nav-btn:hover {
-            background: #2c2c2e;
-            color: #ffffff;
+            background: #1E2536;
+            color: #EDEEF3;
         }
 
         .dp-mode-switch {
             display: flex;
             gap: 6px;
             margin-bottom: 12px;
-            background: #2c2c2e;
+            background: #1E2536;
             padding: 4px;
             border-radius: 8px;
         }
@@ -403,7 +418,7 @@
 
         .dp-mode-btn.active {
             background: var(--accent-pink);
-            color: #000000;
+            color: #0C0F18;
         }
 
         .dp-weekdays {
@@ -430,13 +445,13 @@
             font-size: 0.85rem;
             border-radius: 6px;
             cursor: pointer;
-            color: #ffffff;
+            color: #EDEEF3;
             background: transparent;
             border: none;
         }
 
         .dp-day:hover {
-            background: #2c2c2e;
+            background: #1E2536;
         }
 
         .dp-day.muted {
@@ -444,37 +459,37 @@
         }
 
         .dp-day.selected {
-            background: #38bdf8 !important;
-            color: #000000 !important;
+            background: #5F7FB4 !important;
+            color: #0C0F18 !important;
             font-weight: bold;
         }
 
         .dp-day.in-range {
-            background: rgba(56, 189, 248, 0.2);
-            color: #ffffff;
+            background: rgba(95, 127, 180, 0.2);
+            color: #EDEEF3;
             border-radius: 0;
         }
 
         .dp-day.range-start {
             border-top-left-radius: 6px;
             border-bottom-left-radius: 6px;
-            background: #38bdf8 !important;
-            color: #000000 !important;
+            background: #5F7FB4 !important;
+            color: #0C0F18 !important;
             font-weight: bold;
         }
 
         .dp-day.range-end {
             border-top-right-radius: 6px;
             border-bottom-right-radius: 6px;
-            background: #38bdf8 !important;
-            color: #000000 !important;
+            background: #5F7FB4 !important;
+            color: #0C0F18 !important;
             font-weight: bold;
         }
 
         .dp-footer {
             margin-top: 12px;
             padding-top: 10px;
-            border-top: 1px solid #3a3a3c;
+            border-top: 1px solid #2B3346;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -482,7 +497,7 @@
 
         .dp-apply-btn {
             background: var(--accent-pink);
-            color: #000000;
+            color: #0C0F18;
             border: none;
             padding: 6px 14px;
             border-radius: 6px;
@@ -581,8 +596,8 @@
     <header>
         <h1>Kalendář</h1>
         <div class="header-buttons">
-            <button id="addEventBtn" style="background: linear-gradient(to right, #facc15, #818cf8); color: #000000; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">+ Přidat událost / úkol</button>
-            <button id="analyticsBtn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Volná okna</button>
+            <button id="addEventBtn" style="background: var(--highlight-border); color: #0C0F18; border: none; padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.95rem;">+ Přidat událost / úkol</button>
+            <button id="analyticsBtn" style="background: transparent; border: 1px solid var(--ink-blue); color: var(--ink-blue); padding: 10px 18px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.95rem;">Volná okna</button>
         </div>
     </header>
 </div>
@@ -642,6 +657,32 @@
 
         let customItems = JSON.parse(localStorage.getItem("custom_calendar_items") || "[]");
         let addedSubtasks = JSON.parse(localStorage.getItem("added_subtasks") || "{}");
+
+        function generateStableId() {
+            return "id_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 9);
+        }
+
+        // Migrace: starší data neměla stabilní ID a odkazovala se jen podle pořadí
+        // v poli (index). Po smazání/přidání položky se pak indexy posunuly a
+        // podúkoly i zaškrtnutí "přeskočily" na jinou položku – to způsobovalo
+        // náhodné mizení/objevování věcí. Tady každé položce jednou přiřadíme
+        // trvalé ID a přesuneme k němu její dosavadní podúkoly.
+        let migrationNeeded = false;
+        customItems.forEach((item, idx) => {
+            if (!item.id) {
+                item.id = generateStableId();
+                migrationNeeded = true;
+                const oldKey = "custom_" + idx;
+                if (addedSubtasks[oldKey] && !addedSubtasks["custom_" + item.id]) {
+                    addedSubtasks["custom_" + item.id] = addedSubtasks[oldKey];
+                    delete addedSubtasks[oldKey];
+                }
+            }
+        });
+        if (migrationNeeded) {
+            localStorage.setItem("custom_calendar_items", JSON.stringify(customItems));
+            localStorage.setItem("added_subtasks", JSON.stringify(addedSubtasks));
+        }
 
         function openSubtaskModal(groupId) {
             activeGroupIdForSubtask = groupId;
@@ -748,12 +789,12 @@
                 const btn = document.createElement("button");
                 btn.className = "edit-task-btn";
                 btn.textContent = "Upravit";
-                btn.style.cssText = "background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;";
+                btn.style.cssText = "background: rgba(95, 127, 180, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;";
 
                 const delBtn = document.createElement("button");
                 delBtn.textContent = "✕";
                 delBtn.className = "delete-task-btn";
-                delBtn.style.cssText = "display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; white-space: nowrap;";
+                delBtn.style.cssText = "display: none; background: rgba(169, 75, 92, 0.15); border: 1px solid #A94B5C; color: #A94B5C; white-space: nowrap;";
 
                 btn.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -871,7 +912,7 @@
 
                 const groupDiv = document.createElement("div");
                 groupDiv.className = "item-group custom-injected" + (item.highlighted ? " highlighted-event" : "");
-                const customGroupId = "custom_" + index;
+                const customGroupId = "custom_" + item.id;
                 groupDiv.setAttribute("data-group-id", customGroupId);
 
                 let innerContent = `
@@ -880,17 +921,17 @@
                         <span class="editable-text">${item.title}</span>
                     </div>
                     <div class="event-sub-row">
-                        <button class="add-subtask-btn" style="background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink); white-space: nowrap;">+ Úkol</button>
-                        <button class="edit-group-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;">Upravit</button>
-                        <button class="delete-custom-btn" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; white-space: nowrap;">✕ Smazat</button>
+                        <button class="add-subtask-btn" style="background: rgba(201, 162, 39, 0.15); border: 1px solid var(--accent-pink); color: var(--accent-pink); white-space: nowrap;">+ Úkol</button>
+                        <button class="edit-group-btn" style="background: rgba(95, 127, 180, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); white-space: nowrap;">Upravit</button>
+                        <button class="delete-custom-btn" style="display: none; background: rgba(169, 75, 92, 0.15); border: 1px solid #A94B5C; color: #A94B5C; white-space: nowrap;">✕ Smazat</button>
                     </div>
                     <ul class="task-list">`;
 
                 if (item.type === "task" && item.task) {
                     innerContent += `
                         <li class="task-item custom-main-task">
-                            <input type="checkbox" id="custom_task_${index}" ${item.checked ? 'checked' : ''}>
-                            <label for="custom_task_${index}">${item.task}</label>
+                            <input type="checkbox" id="custom_task_${item.id}" ${item.checked ? 'checked' : ''}>
+                            <label for="custom_task_${item.id}">${item.task}</label>
                         </li>`;
                 }
 
@@ -1109,13 +1150,13 @@
             years.forEach(year => {
                 const gaps = freeGapsByYear[year] || [];
                 html += `
-                    <div style="background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; overflow: hidden;">
-                        <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #f43f5e; font-size: 0.95rem; user-select: none; outline: none;">
-                            <span style="display: flex; align-items: center; gap: 8px; color: #ffffff;">📁 Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
-                            <span class="accordion-arrow" style="color: #a1a1aa; font-size: 0.8rem;">▼</span>
+                    <div style="background: #161B28; border: 1px solid #2B3346; border-radius: 8px; overflow: hidden;">
+                        <div class="accordion-header" data-year-target="${year}" style="padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #A94B5C; font-size: 0.95rem; user-select: none; outline: none;">
+                            <span style="display: flex; align-items: center; gap: 8px; color: #EDEEF3;">📁 Rok ${year} <span style="color: var(--text-muted); font-weight: normal; font-size: 0.85rem;">(${gaps.length} volných oken)</span></span>
+                            <span class="accordion-arrow" style="color: #8D96AC; font-size: 0.8rem;">▼</span>
                         </div>
-                        <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid #27272a;">
-                            ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px; color: #e4e4e7;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
+                        <div class="accordion-content" id="year_content_${year}" style="display: none; padding: 0 14px 12px 14px; font-size: 0.9rem; color: var(--text-color); border-top: 1px solid #1E2536;">
+                            ${gaps.length > 0 ? gaps.map(g => `<div style="margin-top: 6px; color: #C7CCDA;">• <strong>${g.start}. — ${g.end}. ${g.monthName}</strong></div>`).join("") : "<div style='margin-top: 6px; color: var(--text-muted);'>Žádná delší volná okna v tomto roce.</div>"}
                         </div>
                     </div>`;
             });
@@ -1337,6 +1378,7 @@
             }
 
             customItems.push({
+                id: generateStableId(),
                 type: type, year: year, date: date, title: title,
                 task: type === "task" ? task : "",
                 checked: false, highlighted: highlighted
@@ -1405,7 +1447,7 @@
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
             <button id="modalCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
-            <button id="modalSave" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Uložit</button>
+            <button id="modalSave" style="background: var(--accent-pink); color: #0C0F18; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Uložit</button>
         </div>
     </div>
 </div>
@@ -1419,7 +1461,7 @@
         </div>
         <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
             <button id="subtaskCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">Zrušit</button>
-            <button id="subtaskSave" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Přidat</button>
+            <button id="subtaskSave" style="background: var(--accent-pink); color: #0C0F18; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem;">Přidat</button>
         </div>
     </div>
 </div>
@@ -1430,7 +1472,7 @@
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0; margin-bottom: 14px;">Kliknutím na rok rozbalíš měsíce s největším klidem.</p>
         <div id="analyticsContent" style="overflow-y: auto; flex-grow: 1; padding-right: 4px; margin-bottom: 16px;"></div>
         <div style="display: flex; justify-content: flex-end;">
-            <button id="analyticsClose" style="background: var(--accent-pink); color: #000000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; width: 100%;">Zavřít</button>
+            <button id="analyticsClose" style="background: var(--accent-pink); color: #0C0F18; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; width: 100%;">Zavřít</button>
         </div>
     </div>
 </div>
